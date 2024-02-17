@@ -1,0 +1,180 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../generated/mysql/@prisma-client-mysql"
+}
+
+datasource db {
+  provider = "mysql"
+  url = env("MYSQL_DATABASE_URL")
+  relationMode = "prisma"
+}
+
+
+model Store {
+  id String @id @default(uuid())
+  name String @unique
+  userId String
+  description String?
+  imageUrl String?
+  status      StoreStatus    @default(ACTIVE)
+  menus      Menu[] @relation("StoreToMenu")
+  billboards Billboard[] @relation("StoreToBillboard")
+  categories      Category[] @relation("StoreToCategory")
+  order Order[] @relation("StoreToOrder")
+  sizes           Size[]     @relation("StoreToSize")
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+model Billboard{
+  id String @id @default(uuid())
+  storeId String
+  store Store @relation("StoreToBillboard", fields: [storeId], references: [id])
+  
+  label String
+  imageUrl String
+  categories  Category[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([storeId])
+}
+model Category {
+  id          String      @id @default(uuid())
+  storeId     String      // Foreign Key to Store
+  store       Store       @relation("StoreToCategory", fields: [storeId], references: [id])
+  billboardId String      // Foreign Key to Billboard
+  billboard   Billboard   @relation(fields: [billboardId], references: [id])
+  name        String
+  menus       Menu[]      @relation("CategoryToMenu")
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([storeId])
+  @@index([billboardId])
+}
+
+model Chef {
+  id                Int         @id @default(autoincrement())
+  userId            Int         // Link to the User ID in the authentication service
+  bio            String?
+  profilePicture String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  menus             Menu[] @relation("ChefToMenu")
+  schedules         ChefSchedule[] @relation("ChefToChefSchedule")
+  // ... other fields specific to the chef ...
+}
+
+model Menu {
+  id                String         @id @default(uuid())
+  storeId           String
+  store             Store              @relation("StoreToMenu",fields: [storeId], references: [id])
+  name              String
+  chefId            Int
+  chef              Chef        @relation("ChefToMenu",fields: [chefId], references: [id])
+  orderItems        OrderItem[]   @relation("MenuToOrderItem")
+  categoryId        String            // Foreign Key to Category
+  images            Image[]
+  sizeId      String    // Foreign Key to Size
+  size        Size      @relation(fields: [sizeId], references: [id])
+  category          Category      @relation("CategoryToMenu",fields: [categoryId], references: [id])
+  title             String?
+  description       String?
+  pickupDate        DateTime?   // When the customer plans to pick up the order
+  price             Decimal
+  isFeatured  Boolean   @default(false)
+  isArchived  Boolean   @default(false)
+  availableDates    ChefSchedule[] @relation("MenuToChefSchedule")
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@index([storeId])
+  @@index([chefId])
+  @@index([categoryId])
+  @@index([sizeId])
+  // ... other fields ...
+}
+
+model ChefSchedule {
+  id                Int         @id @default(autoincrement())
+  menuId            String
+  chefId            Int
+  chef              Chef        @relation("ChefToChefSchedule",fields: [chefId], references: [id])
+  menu              Menu        @relation("MenuToChefSchedule",fields: [menuId], references: [id])
+  date              DateTime    
+  @@index([chefId])
+  @@index([menuId])
+}
+
+model Order {
+  id                String    @id @default(uuid())
+  customerId        String         // Link to the User ID in the authentication service
+  orderItems        OrderItem[] // Relation to OrderItem model
+  status            OrderStatus
+  isPaid     Boolean   @default(false)
+  phone      String    @default("")
+  address    String    @default("")
+  orderDate         DateTime    @default(now())
+  totalAmount Float       // Calculated total cost of the order
+  notes       String?     // Special instructions or requests
+  storeId    String
+  store      Store    @relation("StoreToOrder",fields: [storeId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  @@index([storeId])
+  // ... other fields ...
+}
+
+model OrderItem {
+  id                Int         @id @default(autoincrement())
+  orderId           String
+  order             Order       @relation(fields: [orderId], references: [id])
+  menuId            String
+  menu              Menu        @relation("MenuToOrderItem",fields: [menuId], references: [id])
+  quantity          Int?
+  unitPrice  Float   // Price of the item at the time of order
+  @@index([orderId])
+  @@index([menuId])
+  
+  // ... other fields ...
+}
+
+model Size {
+  id          String    @id @default(uuid())
+  storeId     String    // Foreign Key to Store
+  store       Store     @relation("StoreToSize", fields: [storeId], references: [id])
+  name        String
+  quantity    String
+  menus       Menu[]    // Relation to Product model
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([storeId])
+}
+
+model Image {
+  id          String   @id @default(uuid())
+  menuId      String   // Foreign Key to Product
+  menu        Menu     @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  url         String   // URL of the image
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([menuId])
+}
+
+
+enum OrderStatus {
+  PLACED
+  PAID
+  CANCELLED
+  COMPLETED
+}
+enum StoreStatus {
+  ACTIVE
+  INACTIVE
+}
