@@ -1,0 +1,178 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service"
+}
+
+datasource db {
+  provider = "mongodb"
+  url = env("STORE_DATABASE_URL")
+}
+
+
+model Store {
+  id String                   @id @default(auto()) @map("_id") @db.ObjectId
+  name String                 @unique
+  userId String
+  description String?
+  imageUrl String?
+  status StoreStatus          @default(ACTIVE)
+  menus Menu[]                
+  billboards Billboard[] 
+  categories Category[]       
+  order Order[]               
+  sizes Size[]                @relation("StoreToSize")
+  createAt DateTime           @default(now())
+  updateAt DateTime           @updatedAt
+}
+
+model Billboard{
+  id String                   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId String              @db.ObjectId
+  store Store                 @relation( fields: [storeId], references: [id])
+  label String
+  imageUrl String
+  categories Category[]
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  @@index([storeId])
+}
+model Category {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  storeId     String      @db.ObjectId
+  store       Store       @relation( fields: [storeId], references: [id])
+  billboardId String      @db.ObjectId
+  billboard   Billboard   @relation(fields: [billboardId], references: [id])
+  name        String
+  menus       Menu[]      
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([storeId])
+  @@index([billboardId])
+}
+
+model Chef {
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  userId         Int         // Link to the User ID in the authentication service
+  bio            String?
+  profilePicture String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  menus             Menu[]
+  schedules         ChefSchedule[] @relation("ChefToChefSchedule")
+  // ... other fields specific to the chef ...
+}
+
+model Menu {
+  id                String         @id @default(auto()) @map("_id") @db.ObjectId
+  storeId           String         @db.ObjectId
+  store             Store          @relation(fields: [storeId], references: [id])
+  name              String
+  chefId            String         @db.ObjectId
+  chef              Chef           @relation(fields: [chefId], references: [id])
+  orderItems        OrderItem[]    
+  images            Image[]
+  sizeId            String         @db.ObjectId
+  size              Size           @relation(fields: [sizeId], references: [id])
+  categoryId        String         @db.ObjectId
+  category          Category       @relation(fields: [categoryId], references: [id])
+  title             String?
+  description       String?
+  pickupDate        DateTime?       // When the customer plans to pick up the order
+  price             Float
+  isFeatured        Boolean         @default(false)
+  isArchived        Boolean         @default(false)
+  availableDates    ChefSchedule[]  @relation("MenuToChefSchedule")
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  @@index([storeId])
+  @@index([chefId])
+  @@index([categoryId])
+  @@index([sizeId])
+  // ... other fields ...
+}
+
+model ChefSchedule {
+  id                String         @id @default(auto()) @map("_id") @db.ObjectId
+  menuId            String         @db.ObjectId
+  chefId            String         @db.ObjectId
+  chef              Chef           @relation("ChefToChefSchedule",fields: [chefId], references: [id])
+  menu              Menu           @relation("MenuToChefSchedule",fields: [menuId], references: [id])
+  date              DateTime    
+  @@index([chefId])
+  @@index([menuId])
+}
+
+model Order {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  customerId        String         // Link to the User ID in the authentication service
+  orderItems        OrderItem[] // Relation to OrderItem model
+  status            OrderStatus
+  isPaid     Boolean   @default(false)
+  phone      String    @default("")
+  address    String    @default("")
+  orderDate         DateTime    @default(now())
+  totalAmount Float       // Calculated total cost of the order
+  notes       String?     // Special instructions or requests
+  storeId    String   @db.ObjectId
+  store      Store    @relation(fields: [storeId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  @@index([storeId])
+  // ... other fields ...
+}
+
+model OrderItem {
+  id                String         @id @default(auto()) @map("_id") @db.ObjectId
+  orderId           String      @db.ObjectId
+  order             Order       @relation(fields: [orderId], references: [id])
+  menuId            String      @db.ObjectId
+  menu              Menu        @relation(fields: [menuId], references: [id])
+  quantity          Int?
+  unitPrice  Float   // Price of the item at the time of order
+  @@index([orderId])
+  @@index([menuId])
+  
+  // ... other fields ...
+}
+
+model Size {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  storeId     String    @db.ObjectId
+  store       Store     @relation("StoreToSize", fields: [storeId], references: [id])
+  name        String
+  quantity    String
+  menus       Menu[]    // Relation to Product model
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([storeId])
+}
+
+model Image {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  menuId      String   @db.ObjectId
+  menu        Menu     @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  url         String   // URL of the image
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([menuId])
+}
+
+
+enum OrderStatus {
+  PLACED
+  PAID
+  CANCELLED
+  COMPLETED
+}
+enum StoreStatus {
+  ACTIVE
+  INACTIVE
+}
