@@ -24,7 +24,11 @@ const StoreAdminPage: React.FC = ({}) => {
       onOpen();
     } else {
       onClose();
-      storeData ? router.push(`/store_admin/${storeData[0].id}`) : null;
+      storeData
+        ? storeData[0]
+          ? router.push(`/store_admin/${storeData[0].id}`)
+          : onOpen()
+        : null;
     }
   }, [chefData, isOpen, onClose, onOpen, router, storeData, storeData?.length]);
 
