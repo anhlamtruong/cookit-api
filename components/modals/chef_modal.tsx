@@ -5,8 +5,8 @@ import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 
 import Modal from "@/components/ui/modal";
 import { Input } from "@/components/ui/input";
@@ -20,12 +20,12 @@ import {
 } from "@/components/ui/form";
 
 import { Button } from "@/components/ui/button";
-import { useCreateStore } from "@/hooks/store/useStore";
 import { FormError } from "../form_error";
 import { Separator } from "../ui/separator";
 import { ImageWithDescriptionUpload } from "../ui/image_with_description_upload";
-import { useChef } from "@/hooks/store/useChef";
 import { settings } from "@/actions/settings";
+import { useChef } from "@/hooks/store/useChef";
+import { BeatLoader } from "react-spinners";
 
 const formSchema = z.object({
   bio: z.string().max(500),
@@ -36,28 +36,56 @@ const formSchema = z.object({
 
 export const ChefModal = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isPreview = searchParams.get("isPreview");
+
   const [error, setError] = useState<string | undefined>("");
   const [loading, setLoading] = useState(false);
+  const { data: dataChef, isLoading: isLoadingChef } = useChef();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      bio: "",
-      images: [],
-    },
+    defaultValues: dataChef
+      ? {
+          bio: dataChef.bio ?? undefined,
+          images: dataChef.profilePictures
+            ? dataChef.profilePictures.map((pic) => ({
+                url: pic.url,
+                description:
+                  pic.description !== null ? pic.description : undefined,
+              }))
+            : [],
+        }
+      : { bio: "", images: [] },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setError("");
-      setLoading(true);
-      const response = await axios.post("/api/admin/chef", values);
-      if (response.status === 200) {
-        toast.success("Success Creating Chef!");
-        settings;
-        router.refresh();
+      if (!isPreview) {
+        setError("");
+        setLoading(true);
+        const response = await axios.post("/api/admin/chef", values);
+        if (response.status === 200) {
+          toast.success("Success Creating Chef!");
+          settings;
+          router.refresh();
+        } else {
+          toast.error("Something went wrong :(, please try again");
+        }
       } else {
-        toast.error("Something went wrong :(, please try again");
+        setError("");
+        setLoading(true);
+        const response = await axios.patch("/api/admin/chef", {
+          ...values,
+          chefId: dataChef?.id,
+        });
+        if (response.status === 200) {
+          toast.success("Success Update Chef!");
+          settings;
+          router.refresh();
+        } else {
+          toast.error("Something went wrong :(, please try again");
+        }
       }
     } catch (error) {
       toast.error("Something went wrong");
@@ -67,7 +95,7 @@ export const ChefModal = () => {
   };
 
   return (
-    <div className="space-y-4 py-2 pb-4 w-3/4 h-full">
+    <div className="space-y-4 py-2 pb-4 w-full h-full ">
       <div className="space-y-2 h-full">
         <Form {...form}>
           <form

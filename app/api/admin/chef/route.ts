@@ -94,3 +94,61 @@ export async function GET(request: Request) {
     } as ResponseInit);
   }
 }
+export async function PATCH(req: Request) {
+  try {
+    const body = await req.json();
+
+    const user = await currentUser();
+
+    if (!user) {
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
+
+    if (user.role === UserRole.USER) {
+      return new NextResponse("Unauthorized", { status: 402 });
+    }
+    const { bio, images, chefId } = body;
+    if (!user) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+    if (!bio) {
+      return new NextResponse("Bio of the Store is required", { status: 400 });
+    }
+    if (!chefId) {
+      return new NextResponse("chefId is required", { status: 400 });
+    }
+
+    const chef = await prismaStore.chef.update({
+      where: { id: chefId },
+      data: {
+        bio: bio as string,
+        profilePictures: {
+          deleteMany: {}, // Deletes all existing pictures for this chef
+          createMany: {
+            data: images.map((img: { url: string; description: string }) => ({
+              url: img.url,
+              description: img.description,
+            })),
+          },
+        },
+        userId: user.id,
+      },
+      include: {
+        profilePictures: true,
+      },
+    });
+    if (!chef) {
+      return new NextResponse("Could not update chef", {
+        status: 403,
+      });
+    }
+
+    return NextResponse.json(chef);
+  } catch (error) {
+    console.log("[CHEF_UPDATE]", error);
+    return new NextResponse("API ERROR", {
+      status: 500,
+      statusText: "Internal Server Error",
+    } as ResponseInit);
+  }
+}

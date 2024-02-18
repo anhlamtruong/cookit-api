@@ -64,9 +64,9 @@ export const ImageWithDescriptionUpload: React.FC<
                 </div>
                 <Image
                   sizes="100"
-                  height={100}
-                  width={100}
-                  className="object-cover w-auto"
+                  height={50}
+                  width={50}
+                  className="object-cover h-auto w-auto aspect-square"
                   alt="Image"
                   src={value.url} // This is now guaranteed to be a non-empty string
                 />
@@ -76,7 +76,7 @@ export const ImageWithDescriptionUpload: React.FC<
                 <Textarea
                   value={value.description || ""}
                   placeholder="Type your description here."
-                  className="min-h-[100px]"
+                  className="h-auto w-full"
                   id={`description-${index}`}
                   onChange={(e) =>
                     handleDescriptionChange(value.url, e.target.value)
