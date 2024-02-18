@@ -23,7 +23,10 @@ import { Icons } from "@/components/ui/icons";
 import { toast } from "sonner";
 import axios from "axios";
 import { AlertModal } from "@/components/modals/alert_modal";
-import { Billboard, Category } from "@/generated/mysql/@prisma-client-mysql";
+import {
+  Billboard,
+  Category,
+} from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import {
   Select,
   SelectContent,

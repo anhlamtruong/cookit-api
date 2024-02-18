@@ -107,6 +107,7 @@ exports.Prisma.StoreScalarFieldEnum = {
   description: 'description',
   imageUrl: 'imageUrl',
   status: 'status',
+  chefId: 'chefId',
   createAt: 'createAt',
   updateAt: 'updateAt'
 };
@@ -133,7 +134,6 @@ exports.Prisma.ChefScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   bio: 'bio',
-  profilePicture: 'profilePicture',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -153,13 +153,6 @@ exports.Prisma.MenuScalarFieldEnum = {
   isArchived: 'isArchived',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
-};
-
-exports.Prisma.ChefScheduleScalarFieldEnum = {
-  id: 'id',
-  menuId: 'menuId',
-  chefId: 'chefId',
-  date: 'date'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
@@ -202,6 +195,15 @@ exports.Prisma.ImageScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ProfilePicturesScalarFieldEnum = {
+  id: 'id',
+  chefId: 'chefId',
+  description: 'description',
+  url: 'url',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -229,11 +231,11 @@ exports.Prisma.ModelName = {
   Category: 'Category',
   Chef: 'Chef',
   Menu: 'Menu',
-  ChefSchedule: 'ChefSchedule',
   Order: 'Order',
   OrderItem: 'OrderItem',
   Size: 'Size',
-  Image: 'Image'
+  Image: 'Image',
+  ProfilePictures: 'ProfilePictures'
 };
 
 /**

@@ -1,10 +1,12 @@
 import { MenusClient } from "./_components/menus_client";
-import prismaMySQL from "@/lib/service/prisma_mysql";
+import prismaStore from "@/lib/service/prisma_store";
 import { format } from "date-fns";
 import { MenusColumn } from "./_components/columns";
 import { formatter } from "@/lib/utils";
+import { Suspense } from "react";
+import { ClimbingBoxLoader } from "react-spinners";
 const MenusPage = async ({ params }: { params: { storeId: string } }) => {
-  const menus = await prismaMySQL.menu.findMany({
+  const menus = await prismaStore.menu.findMany({
     where: { storeId: params.storeId },
     include: {
       category: true,
@@ -18,7 +20,7 @@ const MenusPage = async ({ params }: { params: { storeId: string } }) => {
   const formattedMenus: MenusColumn[] = menus.map((item) => ({
     id: item.id,
     name: item.name,
-    price: formatter.format(item.price.toNumber()),
+    price: formatter.format(item.price),
     category: item.category.name,
     size: item.size.quantity,
     isFeatured: item.isFeatured,
@@ -26,11 +28,13 @@ const MenusPage = async ({ params }: { params: { storeId: string } }) => {
     createdAt: format(item.createdAt, "MMMM do, yyyy"),
   }));
   return (
-    <div className="flex-col">
-      <div className="flex-1 space-y-4 p-8 pt-6">
-        <MenusClient data={formattedMenus}></MenusClient>
+    <Suspense fallback={<ClimbingBoxLoader />}>
+      <div className="flex-col">
+        <div className="flex-1 space-y-4 p-8 pt-6">
+          <MenusClient data={formattedMenus}></MenusClient>
+        </div>
       </div>
-    </div>
+    </Suspense>
   );
 };
 

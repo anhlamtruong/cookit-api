@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prismaMySQL from "@/lib/service/prisma_mysql";
+import prismaStore from "@/lib/service/prisma_store";
 import { currentUser } from "@/lib/auth";
 import { UserRole } from "@/generated/authenticate/@prisma-client-authenticate";
 
@@ -20,7 +20,7 @@ export async function GET(
       return new NextResponse("Unauthorized", { status: 402 });
     }
 
-    const category = await prismaMySQL.category.findUnique({
+    const category = await prismaStore.category.findUnique({
       where: {
         id: params.categoryId,
       },
@@ -51,7 +51,7 @@ export async function DELETE(
       return new NextResponse("Category id is required", { status: 400 });
     }
 
-    const storeByUserId = await prismaMySQL.store.findFirst({
+    const storeByUserId = await prismaStore.store.findFirst({
       where: {
         id: params.storeId,
         userId,
@@ -62,7 +62,7 @@ export async function DELETE(
       return new NextResponse("Unauthorized", { status: 405 });
     }
 
-    const category = await prismaMySQL.category.delete({
+    const category = await prismaStore.category.delete({
       where: {
         id: params.categoryId,
       },
@@ -106,7 +106,7 @@ export async function PATCH(
       return new NextResponse("Category id is required", { status: 400 });
     }
 
-    const storeByUserId = await prismaMySQL.store.findFirst({
+    const storeByUserId = await prismaStore.store.findFirst({
       where: {
         id: params.storeId,
         userId,
@@ -117,7 +117,7 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 405 });
     }
 
-    const category = await prismaMySQL.category.update({
+    const category = await prismaStore.category.update({
       where: {
         id: params.categoryId,
       },

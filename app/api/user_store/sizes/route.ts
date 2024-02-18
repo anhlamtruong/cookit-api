@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import prismaMySQL from "@/lib/service/prisma_mysql";
+import prismaStore from "@/lib/service/prisma_store";
 
 export async function GET(req: Request) {
   try {
-    const sizes = await prismaMySQL.size.findMany();
+    const sizes = await prismaStore.size.findMany();
 
     return NextResponse.json(sizes);
   } catch (error) {

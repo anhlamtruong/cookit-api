@@ -24,7 +24,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { AlertModal } from "@/components/modals/alert_modal";
 import ImageUpload from "@/components/ui/image_upload";
-import { Billboard } from "@/generated/mysql/@prisma-client-mysql";
+import { Billboard } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 
 const formSchema = z.object({
   label: z.string().min(1),

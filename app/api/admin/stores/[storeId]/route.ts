@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prismaMySQL from "@/lib/service/prisma_mysql";
+import prismaStore from "@/lib/service/prisma_store";
 import prismaAuthenticate from "@/lib/service/authenticate_db";
 import { currentUser } from "@/lib/auth";
 import { UserRole } from "@/generated/authenticate/@prisma-client-authenticate";
@@ -24,7 +24,7 @@ export async function GET(request: Request, context: any) {
     }
     const storeId = params.storeId;
 
-    const store = await prismaMySQL.store.findUnique({
+    const store = await prismaStore.store.findUnique({
       where: { id: storeId as string },
     });
 
@@ -68,7 +68,7 @@ export async function PATCH(
     if (!params.storeId) {
       return new NextResponse("Store id is required", { status: 400 });
     }
-    const store = await prismaMySQL.store.updateMany({
+    const store = await prismaStore.store.updateMany({
       where: {
         id: params.storeId,
         userId,
@@ -106,7 +106,7 @@ export async function DELETE(
     if (!params.storeId) {
       return new NextResponse("Store id is required", { status: 400 });
     }
-    const store = await prismaMySQL.store.deleteMany({
+    const store = await prismaStore.store.deleteMany({
       where: {
         id: params.storeId,
         userId,

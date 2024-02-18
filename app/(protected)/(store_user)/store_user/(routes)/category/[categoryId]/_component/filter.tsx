@@ -4,7 +4,7 @@ import qs from "query-string";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { cn } from "@/lib/utils";
-import { Size } from "@/generated/mysql/@prisma-client-mysql";
+import { Size } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import { Button } from "@/components/ui/button";
 
 interface FilterProps {

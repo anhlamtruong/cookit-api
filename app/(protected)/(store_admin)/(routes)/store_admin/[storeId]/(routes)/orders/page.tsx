@@ -1,4 +1,4 @@
-import prismaMySQL from "@/lib/service/prisma_mysql";
+import prismaStore from "@/lib/service/prisma_store";
 import { format } from "date-fns";
 import { formatter } from "@/lib/utils";
 import { OrderColumn } from "./_components/columns";
@@ -6,7 +6,7 @@ import { OrderClient } from "./_components/orders_client";
 import { getUserById } from "@/actions/admin/get_user_by_id";
 export const revalidate = 0;
 const OrdersPage = async ({ params }: { params: { storeId: string } }) => {
-  const orders = await prismaMySQL.order.findMany({
+  const orders = await prismaStore.order.findMany({
     where: {
       storeId: params.storeId,
     },

@@ -4,7 +4,7 @@ import React from "react";
 import { Container } from "../../_components/container";
 import useOrigin from "@/hooks/store/use_origin";
 import useAsyncDataFetcher from "@/hooks/store/useAsyncDataFetcher";
-import { Store } from "@/generated/mysql/@prisma-client-mysql";
+import { Store } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import { ClimbingBoxLoader } from "react-spinners";
 import ErrorComponent from "@/components/ui/error";
 

@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useUserData } from "@/hooks/store/useUser";
 import useStoreData from "@/hooks/store/useStore";
 import useAsyncDataFetcher from "@/hooks/store/useAsyncDataFetcher";
-import { Store } from "@/generated/mysql/@prisma-client-mysql";
+import { Store } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import { UserRole } from "@/generated/authenticate/@prisma-client-authenticate";
 import { NavigationBar } from "@/app/(protected)/(store_admin)/_components/admin_navigation_bar";
 import { RoleGate } from "@/components/auth/role_gate";

@@ -1,4 +1,5 @@
 import { UserRole } from "@/generated/authenticate/@prisma-client-authenticate";
+import { Chef } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import { currentUser } from "@/lib/auth";
 import prismaStore from "@/lib/service/prisma_store";
 import { NextResponse } from "next/server";
@@ -16,35 +17,40 @@ export async function POST(req: Request) {
     if (user.role === UserRole.USER) {
       return new NextResponse("Unauthorized", { status: 402 });
     }
-    const { name, chefId } = body;
+    const { bio, images } = body;
     if (!user) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    if (!name) {
-      return new NextResponse("Name of the Store is required", { status: 400 });
-    }
-    if (!name) {
-      return new NextResponse("ChefId of the Store is required", {
-        status: 400,
-      });
+    if (!bio) {
+      return new NextResponse("Bio of the Store is required", { status: 400 });
     }
 
-    const store = await prismaStore.store.create({
+    const chef = await prismaStore.chef.create({
       data: {
-        name: name,
+        bio: bio as string,
+        profilePictures: {
+          create: images.map((img: { url: string; description: string }) => {
+            return {
+              url: img.url,
+              description: img.description,
+            };
+          }),
+        },
         userId: user.id,
-        chefId: chefId,
+      },
+      include: {
+        profilePictures: true,
       },
     });
-    if (!store) {
-      return new NextResponse("Could not create store", {
+    if (!chef) {
+      return new NextResponse("Could not create chef", {
         status: 403,
       });
     }
 
-    return NextResponse.json(store);
+    return NextResponse.json(chef);
   } catch (error) {
-    console.log("[STORES_POST]", error);
+    console.log("[CHEF_POST]", error);
     return new NextResponse("API ERROR", {
       status: 500,
       statusText: "Internal Server Error",
@@ -54,28 +60,31 @@ export async function POST(req: Request) {
 export async function GET(request: Request) {
   try {
     const user = await currentUser();
+    if (!user?.id) {
+      return NextResponse.redirect(new URL("/sign-in"));
+    }
 
-    if (!user || !user?.id) {
+    if (!user) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
 
     if (user.role === UserRole.USER) {
-      return new NextResponse("Unauthorized", { status: 401 });
+      return new NextResponse("Unauthorized", { status: 402 });
     }
+    const origin =
+      typeof window !== "undefined" && window.location.origin
+        ? window.location.origin
+        : "";
 
-    const store = await prismaStore.store.findFirst({
-      where: { userId: user.id },
+    const chef = await prismaStore.chef.findFirst({
+      include: {
+        profilePictures: true,
+      },
     });
-
-    if (store) {
-      return NextResponse.json(store);
+    if (chef) {
+      return NextResponse.json(chef);
     } else {
-      return new NextResponse(
-        "Don't have any store associate with account ㄟ( ▔, ▔ )ㄏ",
-        {
-          status: 404,
-        }
-      );
+      return NextResponse.json(null);
     }
   } catch (error) {
     console.log(error, "ADMIN ERROR");

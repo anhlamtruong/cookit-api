@@ -7,7 +7,7 @@ import {
   Menu,
   Size,
   Image,
-} from "@/generated/mysql/@prisma-client-mysql";
+} from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import useCart from "@/hooks/store/user/user_cart";
 import Currency from "./ui/currency";
 import { Button } from "@/components/ui/button";

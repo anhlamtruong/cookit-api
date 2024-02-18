@@ -13,23 +13,27 @@ datasource db {
 
 
 model Store {
-  id String                   @id @default(auto()) @map("_id") @db.ObjectId
-  name String                 @unique
+  id String                  @id @default(auto()) @map("_id") @db.ObjectId
+  name String                @unique
   userId String
   description String?
   imageUrl String?
-  status StoreStatus          @default(ACTIVE)
+  status StoreStatus         @default(ACTIVE)
   menus Menu[]                
-  billboards Billboard[] 
-  categories Category[]       
+  billboards Billboard[]      
+  categories Category[]
+  chefId       String         @unique @db.ObjectId
+  chef        Chef            @relation(fields: [chefId], references: [id])
   order Order[]               
-  sizes Size[]                @relation("StoreToSize")
+  sizes Size[]                
   createAt DateTime           @default(now())
   updateAt DateTime           @updatedAt
+
+  
 }
 
 model Billboard{
-  id String                   @id @default(auto()) @map("_id") @db.ObjectId
+  id String                   @id@default(auto()) @map("_id") @db.ObjectId 
   storeId String              @db.ObjectId
   store Store                 @relation( fields: [storeId], references: [id])
   label String
@@ -56,14 +60,15 @@ model Category {
 }
 
 model Chef {
-  id             String         @id @default(auto()) @map("_id") @db.ObjectId
-  userId         Int         // Link to the User ID in the authentication service
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId      
+  userId         String
   bio            String?
-  profilePicture String?
+  store          Store?          
+  profilePictures ProfilePictures[]
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
-  menus             Menu[]
-  schedules         ChefSchedule[] @relation("ChefToChefSchedule")
+  menus          Menu[]
+  
   // ... other fields specific to the chef ...
 }
 
@@ -86,7 +91,6 @@ model Menu {
   price             Float
   isFeatured        Boolean         @default(false)
   isArchived        Boolean         @default(false)
-  availableDates    ChefSchedule[]  @relation("MenuToChefSchedule")
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
 
@@ -97,16 +101,6 @@ model Menu {
   // ... other fields ...
 }
 
-model ChefSchedule {
-  id                String         @id @default(auto()) @map("_id") @db.ObjectId
-  menuId            String         @db.ObjectId
-  chefId            String         @db.ObjectId
-  chef              Chef           @relation("ChefToChefSchedule",fields: [chefId], references: [id])
-  menu              Menu           @relation("MenuToChefSchedule",fields: [menuId], references: [id])
-  date              DateTime    
-  @@index([chefId])
-  @@index([menuId])
-}
 
 model Order {
   id                String    @id @default(auto()) @map("_id") @db.ObjectId
@@ -144,10 +138,10 @@ model OrderItem {
 model Size {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   storeId     String    @db.ObjectId
-  store       Store     @relation("StoreToSize", fields: [storeId], references: [id])
+  store       Store     @relation( fields: [storeId], references: [id])
   name        String
   quantity    String
-  menus       Menu[]    // Relation to Product model
+  menus       Menu[]    
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
@@ -163,6 +157,17 @@ model Image {
   updatedAt   DateTime @updatedAt
 
   @@index([menuId])
+}
+model ProfilePictures {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  chefId      String   @db.ObjectId
+  chef        Chef     @relation(fields: [chefId], references: [id], onDelete: Cascade)
+  description String? 
+  url         String   // URL of the image
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([chefId])
 }
 
 
