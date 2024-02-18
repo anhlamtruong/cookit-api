@@ -17,7 +17,7 @@ const StoreAdminPage: React.FC = ({}) => {
 
   const { data: chefData, isLoading } = useChef();
   const { data: storeData } = useStores();
-
+  console.log(storeData);
   const router = useRouter();
   useEffect(() => {
     if (!isOpen && chefData && storeData?.length === 0) {
