@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prismaMySQL from "@/lib/service/prisma_mysql";
+import prismaStore from "@/lib/service/prisma_store";
 import { currentUser } from "@/lib/auth";
 
 export async function GET(
@@ -11,7 +11,7 @@ export async function GET(
       return new NextResponse("Category id is required", { status: 400 });
     }
 
-    const category = await prismaMySQL.category.findUnique({
+    const category = await prismaStore.category.findUnique({
       where: {
         id: params.categoryId,
       },

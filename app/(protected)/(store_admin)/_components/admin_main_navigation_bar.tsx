@@ -48,6 +48,11 @@ const MainNavigationBar = ({
       label: "Settings",
       active: pathname === `/store_admin/${params.storeId}/settings`,
     },
+    {
+      href: `/store_admin/${params.storeId}/chef`,
+      label: "Chef",
+      active: pathname === `/store_admin/${params.storeId}/chef`,
+    },
   ];
   return (
     <nav className={cn("flex items-center space-x-4 lg:space-x-6")}>

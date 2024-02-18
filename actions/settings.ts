@@ -10,6 +10,7 @@ import { update } from "@/auth";
 import { SettingsSchema } from "@/schemas";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/mail";
+import { UserRole } from "@/generated/authenticate/@prisma-client-authenticate";
 export const settings = async (values: z.infer<typeof SettingsSchema>) => {
   const user = await currentUser();
 

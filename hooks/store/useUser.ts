@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Store } from "@/generated/mysql/@prisma-client-mysql";
+import { Store } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import { User } from "@/generated/authenticate/@prisma-client-authenticate";
 interface useStoreModalUser {
   userData: null | User;

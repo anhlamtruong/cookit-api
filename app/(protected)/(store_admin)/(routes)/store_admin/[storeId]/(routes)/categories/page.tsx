@@ -1,9 +1,11 @@
 import { CategoryClient } from "./_components/categories_client";
-import prismaMySQL from "@/lib/service/prisma_mysql";
+import prismaStore from "@/lib/service/prisma_store";
 import { format } from "date-fns";
 import { CategoryColumn } from "./_components/columns";
+import { Suspense } from "react";
+import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 const CategoriesPage = async ({ params }: { params: { storeId: string } }) => {
-  const categories = await prismaMySQL.category.findMany({
+  const categories = await prismaStore.category.findMany({
     where: { storeId: params.storeId },
     include: {
       billboard: true,
@@ -20,11 +22,13 @@ const CategoriesPage = async ({ params }: { params: { storeId: string } }) => {
     createdAt: format(item.createdAt, "MMMM do, yyyy"),
   }));
   return (
-    <div className="flex-col">
-      <div className="flex-1 space-y-4 p-8 pt-6">
-        <CategoryClient data={formattedCategories}></CategoryClient>
+    <Suspense fallback={<ClimbingBoxLoader />}>
+      <div className="flex-col">
+        <div className="flex-1 space-y-4 p-8 pt-6">
+          <CategoryClient data={formattedCategories}></CategoryClient>
+        </div>
       </div>
-    </div>
+    </Suspense>
   );
 };
 

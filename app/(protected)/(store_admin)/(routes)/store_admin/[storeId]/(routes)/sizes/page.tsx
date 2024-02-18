@@ -1,10 +1,12 @@
 import { format } from "date-fns";
-import prismaMySQL from "@/lib/service/prisma_mysql";
+import prismaStore from "@/lib/service/prisma_store";
 import { SizeColumn } from "./_components/columns";
 import { SizesClient } from "./_components/sizes_client";
+import { Suspense } from "react";
+import { ClimbingBoxLoader } from "react-spinners";
 
 const SizesPage = async ({ params }: { params: { storeId: string } }) => {
-  const sizes = await prismaMySQL.size.findMany({
+  const sizes = await prismaStore.size.findMany({
     where: {
       storeId: params.storeId,
     },
@@ -21,11 +23,13 @@ const SizesPage = async ({ params }: { params: { storeId: string } }) => {
   }));
 
   return (
-    <div className="flex-col">
-      <div className="flex-1 space-y-4 p-8 pt-6">
-        <SizesClient data={formattedSizes} />
+    <Suspense fallback={<ClimbingBoxLoader />}>
+      <div className="flex-col">
+        <div className="flex-1 space-y-4 p-8 pt-6">
+          <SizesClient data={formattedSizes} />
+        </div>
       </div>
-    </div>
+    </Suspense>
   );
 };
 

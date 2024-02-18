@@ -1,6 +1,6 @@
 import { UserRole } from "@/generated/authenticate/@prisma-client-authenticate";
 import { currentUser } from "@/lib/auth";
-import prismaMySQL from "@/lib/service/prisma_mysql";
+import prismaStore from "@/lib/service/prisma_store";
 import { NextResponse } from "next/server";
 export async function GET(req: Request) {
   try {
@@ -14,7 +14,7 @@ export async function GET(req: Request) {
       return new NextResponse("Unauthorized", { status: 402 });
     }
 
-    const stores = await prismaMySQL.store.findMany({
+    const stores = await prismaStore.store.findMany({
       where: {
         userId: user.id,
       },

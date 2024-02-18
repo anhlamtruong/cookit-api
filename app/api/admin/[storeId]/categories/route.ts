@@ -1,6 +1,6 @@
 import { UserRole } from "@/generated/authenticate/@prisma-client-authenticate";
 import { currentUser } from "@/lib/auth";
-import prismaMySQL from "@/lib/service/prisma_mysql";
+import prismaStore from "@/lib/service/prisma_store";
 import { NextResponse } from "next/server";
 
 export async function POST(
@@ -28,7 +28,7 @@ export async function POST(
       return new NextResponse("Store ID is required", { status: 400 });
     }
 
-    const storeByUserId = await prismaMySQL.store.findFirst({
+    const storeByUserId = await prismaStore.store.findFirst({
       where: {
         id: params.storeId,
         userId: user.id,
@@ -38,7 +38,7 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
-    const category = await prismaMySQL.category.create({
+    const category = await prismaStore.category.create({
       data: {
         name,
         billboardId,
@@ -77,7 +77,7 @@ export async function GET(
       return new NextResponse("Store ID is required", { status: 400 });
     }
 
-    const storeByUserId = await prismaMySQL.store.findFirst({
+    const storeByUserId = await prismaStore.store.findFirst({
       where: {
         id: params.storeId,
         userId: user.id,
@@ -87,7 +87,7 @@ export async function GET(
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
-    const categories = await prismaMySQL.category.findMany({
+    const categories = await prismaStore.category.findMany({
       where: {
         storeId: params.storeId,
       },

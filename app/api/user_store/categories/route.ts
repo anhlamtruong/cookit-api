@@ -1,10 +1,10 @@
 import { currentUser } from "@/lib/auth";
-import prismaMySQL from "@/lib/service/prisma_mysql";
+import prismaStore from "@/lib/service/prisma_store";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
   try {
-    const categories = await prismaMySQL.category.findMany();
+    const categories = await prismaStore.category.findMany();
 
     return NextResponse.json(categories);
   } catch (error) {

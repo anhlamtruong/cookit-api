@@ -1,4 +1,4 @@
-import { Billboard } from "@/generated/mysql/@prisma-client-mysql";
+import { Billboard } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 
 interface BillboardProps {
   data: Billboard;

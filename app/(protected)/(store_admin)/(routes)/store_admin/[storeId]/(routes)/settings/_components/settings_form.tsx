@@ -26,7 +26,7 @@ import useStoreData from "@/hooks/store/useStore";
 import { AlertModal } from "@/components/modals/alert_modal";
 import { ApiAlert } from "@/components/ui/api_alert";
 import useOrigin from "@/hooks/store/use_origin";
-import { Store } from "@/generated/mysql/@prisma-client-mysql";
+import { Store } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import ImageUpload from "@/components/ui/image_upload";
 interface SettingsForm {
   initialDataStore: Store;

@@ -1,7 +1,7 @@
-import prismaMySQL from "@/lib/service/prisma_mysql";
+import prismaStore from "@/lib/service/prisma_store";
 
 export const getStockCount = async (storeId: string) => {
-  const stockCount = await prismaMySQL.menu.count({
+  const stockCount = await prismaStore.menu.count({
     where: {
       storeId,
     },

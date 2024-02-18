@@ -163,11 +163,14 @@ export const UserSettingsForm = () => {
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a role" />
+                      <SelectValue
+                        placeholder={field.value ?? "Select your role"}
+                      />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value={UserRole.ADMIN}>Admin</SelectItem>
+                    {/* <SelectItem value={UserRole.ADMIN}>Admin</SelectItem> */}
+                    <SelectItem value={UserRole.CHEF}>Chef</SelectItem>
                     <SelectItem value={UserRole.USER}>User</SelectItem>
                   </SelectContent>
                 </Select>

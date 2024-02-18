@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prismaMySQL from "@/lib/service/prisma_mysql";
+import prismaStore from "@/lib/service/prisma_store";
 import { currentUser } from "@/lib/auth";
 import { UserRole } from "@/generated/authenticate/@prisma-client-authenticate";
 
@@ -21,7 +21,7 @@ export async function GET(
       return new NextResponse("Menu id is required", { status: 400 });
     }
 
-    const menu = await prismaMySQL.menu.findUnique({
+    const menu = await prismaStore.menu.findUnique({
       where: {
         id: params.menuId,
       },
@@ -58,7 +58,7 @@ export async function DELETE(
       return new NextResponse("Menu id is required", { status: 400 });
     }
 
-    const storeByUserId = await prismaMySQL.store.findFirst({
+    const storeByUserId = await prismaStore.store.findFirst({
       where: {
         id: params.storeId,
         userId,
@@ -69,7 +69,7 @@ export async function DELETE(
       return new NextResponse("Unauthorized", { status: 405 });
     }
 
-    const menu = await prismaMySQL.menu.delete({
+    const menu = await prismaStore.menu.delete({
       where: {
         id: params.menuId,
       },
@@ -130,7 +130,7 @@ export async function PATCH(
       return new NextResponse("Menu id is required", { status: 400 });
     }
 
-    const storeByUserId = await prismaMySQL.store.findFirst({
+    const storeByUserId = await prismaStore.store.findFirst({
       where: {
         id: params.storeId,
         userId,
@@ -141,7 +141,7 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 405 });
     }
 
-    const menu = await prismaMySQL.menu.update({
+    const menu = await prismaStore.menu.update({
       where: {
         id: params.menuId,
       },

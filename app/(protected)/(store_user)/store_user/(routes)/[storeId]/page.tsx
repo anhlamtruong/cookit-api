@@ -20,7 +20,7 @@ import {
   Menu,
   Size,
   Store,
-} from "@/generated/mysql/@prisma-client-mysql";
+} from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import LoadingCarrot from "@/components/ui/loading/loading-carrot";
 
 import Autoplay from "embla-carousel-autoplay";

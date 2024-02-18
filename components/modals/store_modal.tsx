@@ -5,7 +5,7 @@ import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import Modal from "@/components/ui/modal";
@@ -22,6 +22,7 @@ import { useStoreModal } from "@/hooks/store/useStoreModal";
 import { Button } from "@/components/ui/button";
 import { useCreateStore } from "@/hooks/store/useStore";
 import { FormError } from "../form_error";
+import { useChef } from "@/hooks/store/useChef";
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -30,6 +31,7 @@ const formSchema = z.object({
 export const StoreModal = () => {
   const storeModal = useStoreModal();
   const router = useRouter();
+  const { data: chef } = useChef();
   const [error, setError] = useState<string | undefined>("");
   const [loading, setLoading] = useState(false);
   const { mutate: addStore } = useCreateStore();
@@ -45,12 +47,16 @@ export const StoreModal = () => {
     try {
       setError("");
       setLoading(true);
-      const response = await axios.post("/api/admin/store", values);
+      const response = await axios.post("/api/admin/store", {
+        ...values,
+        chefId: chef?.id,
+      });
 
       addStore(response.data, {
         onSuccess: () => {
           toast.success("Success Creating Store!");
           router.refresh();
+          form.reset();
           storeModal.onClose();
         },
         onError: () => {

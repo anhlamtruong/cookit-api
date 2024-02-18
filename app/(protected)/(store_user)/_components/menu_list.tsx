@@ -1,6 +1,9 @@
 "use client";
 
-import { Image, Menu } from "@/generated/mysql/@prisma-client-mysql";
+import {
+  Image,
+  Menu,
+} from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import NoResults from "./ui/new_results";
 import MenuCard from "./ui/menu_cart";
 
