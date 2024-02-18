@@ -3,13 +3,13 @@
 const { PrismaPlugin } = require("@prisma/nextjs-monorepo-workaround-plugin");
 
 const nextConfig = {
-  // webpack: (config, { isServer }) => {
-  //   if (isServer) {
-  //     config.plugins = [...config.plugins, new PrismaPlugin()];
-  //   }
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.plugins = [...config.plugins, new PrismaPlugin()];
+    }
 
-  //   return config;
-  // },
+    return config;
+  },
 
   images: {
     remotePatterns: [
