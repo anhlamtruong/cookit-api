@@ -7,7 +7,7 @@ import {
   Size,
   Image as ImageMenu,
   OrderItem,
-} from "@/generated/mysql/@prisma-client-mysql";
+} from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 
 interface CartStore {
   items: (Menu & {

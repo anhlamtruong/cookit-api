@@ -35,7 +35,7 @@ import {
   Image,
   Category,
   Size,
-} from "@/generated/mysql/@prisma-client-mysql";
+} from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import {
   Select,
   SelectContent,

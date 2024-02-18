@@ -10,7 +10,7 @@ import {
   Image,
   Category,
   Size,
-} from "@/generated/mysql/@prisma-client-mysql";
+} from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import useAsyncDataFetcher from "@/hooks/store/useAsyncDataFetcher";
 import useOrigin from "@/hooks/store/use_origin";
 import { BeatLoader } from "react-spinners";

@@ -3,7 +3,7 @@ import {
   Menu,
   Size,
   Image,
-} from "@/generated/mysql/@prisma-client-mysql";
+} from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import { create } from "zustand";
 
 interface PreviewModalStore {

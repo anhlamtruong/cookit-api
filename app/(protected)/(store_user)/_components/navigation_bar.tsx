@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { Container } from "./container";
 import MainNav from "./main_navigation_bar";
-import { Category } from "@/generated/mysql/@prisma-client-mysql";
+import { Category } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import useAsyncDataFetcher from "@/hooks/store/useAsyncDataFetcher";
 import useOrigin from "@/hooks/store/use_origin";
 import NavbarActions from "./navigation_bar_action";

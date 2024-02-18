@@ -2,7 +2,7 @@
 
 import NextImage from "next/image";
 import { Tab } from "@headlessui/react";
-import { Image } from "@/generated/mysql/@prisma-client-mysql";
+import { Image } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 
 import GalleryTab from "./gallery_tab";
 

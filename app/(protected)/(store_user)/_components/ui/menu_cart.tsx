@@ -7,7 +7,7 @@ import { useParams, useRouter } from "next/navigation";
 import {
   Menu,
   Image as MenuImage,
-} from "@/generated/mysql/@prisma-client-mysql";
+} from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import IconButton from "./icon_button";
 import Currency from "./currency";
 import usePreviewModal from "@/hooks/store/user/use_preview_modal";

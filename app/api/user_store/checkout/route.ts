@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import prismaMySQL from "@/lib/service/prisma_mysql";
+import prismaStore from "@/lib/service/prisma_store";
 import { currentUser } from "@/lib/auth";
-import { OrderStatus } from "@/generated/mysql/@prisma-client-mysql";
+import { OrderStatus } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 
 export async function POST(req: Request) {
   try {
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
           orderItems: any;
           notes: string;
         }) => {
-          await prismaMySQL.order.create({
+          await prismaStore.order.create({
             data: {
               customerId: user.id,
               storeId,

@@ -1,4 +1,4 @@
-import prismaMySQL from "@/lib/service/prisma_mysql";
+import prismaStore from "@/lib/service/prisma_store";
 
 interface GraphData {
   name: string;
@@ -8,7 +8,7 @@ interface GraphData {
 export const getGraphRevenue = async (
   storeId: string
 ): Promise<GraphData[]> => {
-  const placedOrders = await prismaMySQL.order.findMany({
+  const placedOrders = await prismaStore.order.findMany({
     where: {
       storeId,
       // isPaid: false,
@@ -30,7 +30,7 @@ export const getGraphRevenue = async (
     let revenueForOrder = 0;
 
     for (const item of order.orderItems) {
-      revenueForOrder += item.menu.price.toNumber();
+      revenueForOrder += item.menu.price;
     }
 
     // Adding the revenue for this order to the respective month

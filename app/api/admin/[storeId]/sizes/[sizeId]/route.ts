@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prismaMySQL from "@/lib/service/prisma_mysql";
+import prismaStore from "@/lib/service/prisma_store";
 import { currentUser } from "@/lib/auth";
 
 export async function GET(
@@ -11,7 +11,7 @@ export async function GET(
       return new NextResponse("Size id is required", { status: 400 });
     }
 
-    const size = await prismaMySQL.size.findUnique({
+    const size = await prismaStore.size.findUnique({
       where: {
         id: params.sizeId,
       },
@@ -39,7 +39,7 @@ export async function DELETE(
       return new NextResponse("Size id is required", { status: 400 });
     }
 
-    const storeByUserId = await prismaMySQL.store.findFirst({
+    const storeByUserId = await prismaStore.store.findFirst({
       where: {
         id: params.storeId,
         userId,
@@ -50,7 +50,7 @@ export async function DELETE(
       return new NextResponse("Unauthorized", { status: 405 });
     }
 
-    const size = await prismaMySQL.size.delete({
+    const size = await prismaStore.size.delete({
       where: {
         id: params.sizeId,
       },
@@ -90,7 +90,7 @@ export async function PATCH(
       return new NextResponse("size id is required", { status: 400 });
     }
 
-    const storeByUserId = await prismaMySQL.store.findFirst({
+    const storeByUserId = await prismaStore.store.findFirst({
       where: {
         id: params.storeId,
         userId,
@@ -101,7 +101,7 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 405 });
     }
 
-    const size = await prismaMySQL.size.update({
+    const size = await prismaStore.size.update({
       where: {
         id: params.sizeId,
       },

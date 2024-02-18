@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
-import { Category } from "@/generated/mysql/@prisma-client-mysql";
+import { Category } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 
 interface MainNavProps {
   data: Category[];

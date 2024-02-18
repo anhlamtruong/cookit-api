@@ -5,7 +5,7 @@ import { Plus, X } from "lucide-react";
 import { Dialog } from "@headlessui/react";
 
 import Filter from "./filter";
-import { Size } from "@/generated/mysql/@prisma-client-mysql";
+import { Size } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import { Button } from "@/components/ui/button";
 import IconButton from "@/app/(protected)/(store_user)/_components/ui/icon_button";
 

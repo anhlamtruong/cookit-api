@@ -1,15 +1,15 @@
-import { PrismaClient as PrismaClientMySQL } from "@/generated/mysql/@prisma-client-mysql";
+import { PrismaClient as PrismaClientMySQL } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 
 const prismaClientSingleton = () => {
   return new PrismaClientMySQL();
 };
 
 declare global {
-  var prismaMySQL: undefined | ReturnType<typeof prismaClientSingleton>;
+  var prismaStore: undefined | ReturnType<typeof prismaClientSingleton>;
 }
 
-const prismaMySQL = global.prismaMySQL ?? prismaClientSingleton();
+const prismaStore = global.prismaStore ?? prismaClientSingleton();
 
-if (process.env.NODE_ENV !== "production") global.prismaMySQL = prismaMySQL;
+if (process.env.NODE_ENV !== "production") global.prismaStore = prismaStore;
 
-export default prismaMySQL;
+export default prismaStore;

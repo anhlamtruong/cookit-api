@@ -1,5 +1,5 @@
 import { currentUser } from "@/lib/auth";
-import prismaMySQL from "@/lib/service/prisma_mysql";
+import prismaStore from "@/lib/service/prisma_store";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -15,7 +15,7 @@ export async function GET(req: Request) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
 
-    const menus = await prismaMySQL.menu.findMany({
+    const menus = await prismaStore.menu.findMany({
       where: {
         categoryId,
         sizeId,
