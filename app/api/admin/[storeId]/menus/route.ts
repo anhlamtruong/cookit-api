@@ -19,6 +19,7 @@ export async function POST(
       isFeatured,
       isArchived,
       pickupDate,
+      chefId,
     } = body;
     if (!user) {
       return new NextResponse("Unauthenticated", { status: 401 });
@@ -61,7 +62,7 @@ export async function POST(
     const menu = await prismaStore.menu.create({
       data: {
         name,
-        chefId: "test",
+        chefId: chefId,
         price,
         isFeatured,
         isArchived,

@@ -47,6 +47,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { Calendar } from "@/components/ui/calendar";
+import { useChef } from "@/hooks/store/useChef";
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -76,6 +77,7 @@ export const MenuForm: React.FC<MenuForm> = ({
 }) => {
   const params = useParams();
   const router = useRouter();
+  const { data: chefData } = useChef();
 
   const title = initialDataMenu ? "Edit Menu" : "Create Menu";
   const description = initialDataMenu ? "Edit Menu" : "Add a new Menu";
@@ -116,7 +118,10 @@ export const MenuForm: React.FC<MenuForm> = ({
           data
         )) as Menu;
       } else {
-        (await axios.post(`/api/admin/${params.storeId}/menus`, data)) as Menu;
+        (await axios.post(`/api/admin/${params.storeId}/menus`, {
+          ...data,
+          chefId: chefData?.id,
+        })) as Menu;
       }
 
       router.push(`/store_admin/${params.storeId}/menus`);
