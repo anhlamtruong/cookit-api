@@ -1,3 +1,6 @@
+// Imports
+// ========================================================
+import { NextResponse, type NextRequest } from "next/server";
 import authConfig from "@/auth.config";
 import NextAuth from "next-auth";
 const { auth } = NextAuth(authConfig);
@@ -6,6 +9,7 @@ import {
   apiAuthPrefix,
   authRoutes,
   publicRoutes,
+  apiPublicPrefix,
 } from "@/routes";
 
 export default auth((req) => {
@@ -13,6 +17,7 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isApiPublicPrefix = nextUrl.pathname.startsWith(apiPublicPrefix);
   const isPublicRoutes = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
@@ -20,6 +25,9 @@ export default auth((req) => {
     return null;
   }
   if (isApiAuthRoute) {
+    return null;
+  }
+  if (isApiPublicPrefix) {
     return null;
   }
   if (isAuthRoute) {

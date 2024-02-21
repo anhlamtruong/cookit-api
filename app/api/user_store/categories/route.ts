@@ -1,8 +1,7 @@
-import { currentUser } from "@/lib/auth";
 import prismaStore from "@/lib/service/prisma_store";
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request) {
+export async function GET(req: Request, res: NextResponse) {
   try {
     const categories = await prismaStore.category.findMany();
 
