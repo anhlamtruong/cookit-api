@@ -30,7 +30,6 @@ export const useCreateStore = () => {
   return useMutation({
     mutationFn: createNewStore,
     onSuccess: () => {
-      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["stores"] });
     },
   });

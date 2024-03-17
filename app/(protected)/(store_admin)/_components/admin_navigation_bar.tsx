@@ -13,7 +13,6 @@ interface NavigationBarProps {
 export const NavigationBar: React.FC<NavigationBarProps> = ({
   className = "",
 }) => {
-  // const { data: storesData } = useAsyncDataFetcher<Store[]>("/api/stores");
   const { data: stores, isLoading } = useStores();
 
   return (
