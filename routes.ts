@@ -35,4 +35,4 @@ export const apiPublicPrefix = "/api/user_store";
  * The default redirect path after logging in
  * @type {string}
  */
-export const DEFAULT_LOGIN_REDIRECT = "/sassy_authy/settings";
+export const DEFAULT_LOGIN_REDIRECT = "/store_admin";

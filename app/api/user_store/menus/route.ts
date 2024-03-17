@@ -9,12 +9,6 @@ export async function GET(req: Request) {
     const sizeId = searchParams.get("sizeId") || undefined;
     const isFeatured = searchParams.get("isFeatured");
 
-    const user = await currentUser();
-
-    if (!user) {
-      return new NextResponse("Unauthenticated", { status: 401 });
-    }
-
     const menus = await prismaStore.menu.findMany({
       where: {
         categoryId,

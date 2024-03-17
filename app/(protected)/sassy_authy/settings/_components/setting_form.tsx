@@ -34,6 +34,7 @@ import { FormError } from "@/components/form_error";
 import { FormSuccess } from "@/components/form_success";
 import { ClockLoader } from "react-spinners";
 import { UserRole } from "@/generated/authenticate/@prisma-client-authenticate";
+import { RoleGate } from "@/components/auth/role_gate";
 
 export const UserSettingsForm = () => {
   const user = useCurrentUser();
@@ -169,7 +170,9 @@ export const UserSettingsForm = () => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {/* <SelectItem value={UserRole.ADMIN}>Admin</SelectItem> */}
+                    <RoleGate allowedRole={[UserRole.ADMIN]}>
+                      <SelectItem value={UserRole.ADMIN}>Admin</SelectItem>
+                    </RoleGate>
                     <SelectItem value={UserRole.CHEF}>Chef</SelectItem>
                     <SelectItem value={UserRole.USER}>User</SelectItem>
                   </SelectContent>

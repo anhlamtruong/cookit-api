@@ -1,4 +1,3 @@
-import { currentUser } from "@/lib/auth";
 import prismaStore from "@/lib/service/prisma_store";
 import { NextResponse } from "next/server";
 
@@ -7,12 +6,6 @@ export async function GET(
   { params }: { params: { menuId: string } }
 ) {
   try {
-    const user = await currentUser();
-
-    if (!user) {
-      return new NextResponse("Unauthenticated", { status: 401 });
-    }
-
     const menu = await prismaStore.menu.findUnique({
       where: {
         id: params.menuId,
