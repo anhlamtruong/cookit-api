@@ -1,22 +1,24 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import prismaStore from "@/lib/service/prisma_store";
-import { currentUser } from "@/lib/auth";
 import { OrderStatus } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 
-export async function POST(req: Request) {
+/**
+ * Update the order
+ * @param req
+ */
+export async function POST(req: NextRequest) {
   try {
-    const user = await currentUser();
-    if (!user?.id) {
+    // Get JSON payload
+    const { orders, userId } = await req.json();
+
+    if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
-
-    const { orders } = await req.json();
 
     if (!orders || orders.length === 0) {
       return new NextResponse("Orders data is required", { status: 400 });
     }
-    // console.log("API TEST");
-    // console.log(orders);
+
     const test = await Promise.all(
       orders.map(
         async ({
@@ -32,7 +34,7 @@ export async function POST(req: Request) {
         }) => {
           await prismaStore.order.create({
             data: {
-              customerId: user.id,
+              customerId: userId,
               storeId,
               isPaid: false,
               status: OrderStatus.PLACED,
@@ -60,7 +62,6 @@ export async function POST(req: Request) {
         }
       )
     );
-    // console.log(test);
 
     return NextResponse.json("Successfully Place", { status: 200 });
   } catch (error) {
@@ -71,3 +72,19 @@ export async function POST(req: Request) {
     } as ResponseInit);
   }
 }
+
+// Endpoints
+// ========================================================
+// /**
+//  * Basic OPTIONS Request to simuluate OPTIONS preflight request for mutative requests
+//  */
+export const OPTIONS = async (request: NextRequest) => {
+  // Return Response
+  return NextResponse.json(
+    {},
+    {
+      status: 200,
+      // headers: getCorsHeaders(request.headers.get("origin") || ""),
+    }
+  );
+};

@@ -14,11 +14,6 @@ export async function GET(
     if (!params.storeId) {
       return new NextResponse("Store id is required", { status: 400 });
     }
-    const user = await currentUser();
-
-    if (!user) {
-      return new NextResponse("Unauthenticated", { status: 401 });
-    }
 
     const menus = await prismaStore.menu.findMany({
       where: {
