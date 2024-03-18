@@ -6,9 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 
-import Modal from "@/components/ui/modal";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -99,26 +98,33 @@ export const ChefModal = () => {
       <div className="space-y-2 h-full">
         <Form {...form}>
           <form
-            className="flex flex-col gap-4 h-full "
+            className="flex flex-col gap-4 h-full"
             onSubmit={form.handleSubmit(onSubmit)}
           >
-            <FormField
-              control={form.control}
-              name="bio"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Short Description on Your Bio</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder="My name is Cookit"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="flex flex-col space-y-2">
+              <FormField
+                control={form.control}
+                name="bio"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold">
+                      Short Description on Your Bio
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="rounded-md border-gray-300 focus:border-blue-500"
+                        disabled={loading}
+                        placeholder="My name is Cookit"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-sm text-gray-500">
+                      Max 500 characters
+                    </FormMessage>
+                  </FormItem>
+                )}
+              />
+            </div>
             <Separator></Separator>
             <FormField
               control={form.control}
@@ -146,10 +152,15 @@ export const ChefModal = () => {
                 </>
               )}
             />
+            <div className="flex flex-col space-y-2"></div>
             <FormError message={error}></FormError>
             <div className="pt-6 space-x-2 flex items-center justify-end w-full">
               <Button disabled={loading} type="submit">
-                Confirm Bio Change
+                {loading ? (
+                  <BeatLoader color="white" size={8} />
+                ) : (
+                  "Confirm Bio Change"
+                )}
               </Button>
             </div>
           </form>
