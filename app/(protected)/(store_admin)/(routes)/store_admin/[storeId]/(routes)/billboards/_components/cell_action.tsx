@@ -25,6 +25,7 @@ interface CellActionProps {
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter();
   const params = useParams();
+
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -37,7 +38,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       router.refresh();
     } catch (error) {
       toast.error(
-        "Make sure you removed all categories using this billboard first."
+        "Cannot delete billboard: It is associated with categories. Please remove category associations first."
       );
     } finally {
       setOpen(false);

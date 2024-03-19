@@ -37,7 +37,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       router.refresh();
     } catch (error) {
       toast.error(
-        "Make sure you removed all menus using this categories first."
+        "Cannot delete category: It is associated with menus. Please remove menu associations first."
       );
     } finally {
       setOpen(false);

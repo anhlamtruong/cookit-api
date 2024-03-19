@@ -97,7 +97,7 @@ const BillboardForm: React.FC<BillboardForm> = ({ initialDataBillboard }) => {
     } catch (error) {
       console.error(error);
       toast.error(
-        "Make sure you removed all categories using this billboard first."
+        "Cannot delete billboard: It is associated with categories. Please remove category associations first."
       );
     } finally {
       setLoading(false);
