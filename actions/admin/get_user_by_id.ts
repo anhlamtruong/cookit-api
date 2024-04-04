@@ -8,6 +8,10 @@ export const getUserById = async (userId: string) => {
       id: userId,
     },
   });
+
+  if (!user) {
+    return { name: "Unknown Name", email: "Unknown Email", image: "" };
+  }
   const { name, email, image } = user as User;
 
   return { name, email, image };

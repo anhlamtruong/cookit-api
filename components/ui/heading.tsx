@@ -11,3 +11,11 @@ export const Heading: React.FC<HeadingProps> = ({ title, description }) => {
     </div>
   );
 };
+
+export const SecondHeading = ({ title }: { title: string }) => {
+  return (
+    <div>
+      <h4 className="text-2xl font-semibold tracking-tight">{title}</h4>
+    </div>
+  );
+};

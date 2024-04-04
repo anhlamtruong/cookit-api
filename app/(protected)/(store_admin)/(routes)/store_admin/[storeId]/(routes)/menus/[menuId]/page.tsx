@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { MenuForm } from "./_components/menu_form";
 import prismaStore from "@/lib/service/prisma_store";
-import { ClimbingBoxLoader } from "react-spinners";
+import LoadingOverlay from "@/components/loading_overlay";
 
 const MenuPage = async ({
   params,
@@ -31,7 +31,7 @@ const MenuPage = async ({
     },
   });
   return (
-    <Suspense fallback={<ClimbingBoxLoader />}>
+    <Suspense fallback={<LoadingOverlay />}>
       <div className=" flex-col">
         <div className=" flex-1 space-y-4 p-8 pt-6">
           <MenuForm

@@ -1,3 +1,8 @@
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+export {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  listAll,
+} from "firebase/storage";
 
-import { storage } from "@/lib/firebase/firebase";
+export { storage } from "@/lib/firebase/firebase";

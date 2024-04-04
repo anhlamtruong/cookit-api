@@ -3,7 +3,7 @@ import prismaStore from "@/lib/service/prisma_store";
 import { SizeColumn } from "./_components/columns";
 import { SizesClient } from "./_components/sizes_client";
 import { Suspense } from "react";
-import { ClimbingBoxLoader } from "react-spinners";
+import LoadingOverlay from "@/components/loading_overlay";
 
 const SizesPage = async ({ params }: { params: { storeId: string } }) => {
   const sizes = await prismaStore.size.findMany({
@@ -23,7 +23,7 @@ const SizesPage = async ({ params }: { params: { storeId: string } }) => {
   }));
 
   return (
-    <Suspense fallback={<ClimbingBoxLoader />}>
+    <Suspense fallback={<LoadingOverlay />}>
       <div className="flex-col">
         <div className="flex-1 space-y-4 p-8 pt-6">
           <SizesClient data={formattedSizes} />

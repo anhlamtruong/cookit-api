@@ -212,6 +212,7 @@ export const UserSettingsForm = () => {
             Save
           </Button>
           {isPending && <ClockLoader size={30}></ClockLoader>}
+          
         </div>
       </form>
     </Form>

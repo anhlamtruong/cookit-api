@@ -39,3 +39,7 @@ next-env.d.ts
 lib/firebase/config.js
 .next/
 .firebase/
+
+
+#AWS
+cookit-redis.pem

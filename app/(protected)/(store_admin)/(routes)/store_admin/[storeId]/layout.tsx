@@ -5,7 +5,6 @@ import React, { useEffect } from "react";
 
 import LoadingCarrot from "@/components/ui/loading/loading-carrot";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useUserData } from "@/hooks/store/useUser";
 import useStoreData from "@/hooks/store/useStore";
 import useAsyncDataFetcher from "@/hooks/store/useAsyncDataFetcher";
 import { Store } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";

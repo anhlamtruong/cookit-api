@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 const MainNavigationBar = ({
@@ -11,6 +11,7 @@ const MainNavigationBar = ({
 }: React.HTMLAttributes<HTMLElement>) => {
   const pathname = usePathname();
   const params = useParams();
+  const router = useRouter();
 
   const routes = [
     {
@@ -52,6 +53,11 @@ const MainNavigationBar = ({
       href: `/store_admin/${params.storeId}/chef`,
       label: "Chef",
       active: pathname === `/store_admin/${params.storeId}/chef`,
+    },
+    {
+      href: `/recipes`,
+      label: "Recipes",
+      active: pathname === `/recipes`,
     },
   ];
   return (

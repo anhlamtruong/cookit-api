@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { CategoryColumn } from "./_components/columns";
 import { Suspense } from "react";
 import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
+import LoadingOverlay from "@/components/loading_overlay";
 const CategoriesPage = async ({ params }: { params: { storeId: string } }) => {
   const categories = await prismaStore.category.findMany({
     where: { storeId: params.storeId },
@@ -22,7 +23,7 @@ const CategoriesPage = async ({ params }: { params: { storeId: string } }) => {
     createdAt: format(item.createdAt, "MMMM do, yyyy"),
   }));
   return (
-    <Suspense fallback={<ClimbingBoxLoader />}>
+    <Suspense fallback={<LoadingOverlay />}>
       <div className="flex-col">
         <div className="flex-1 space-y-4 p-8 pt-6">
           <CategoryClient data={formattedCategories}></CategoryClient>
