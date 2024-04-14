@@ -22,16 +22,18 @@ export const IconPickerFirebase = ({
   const { data: icons, isLoading } = useIcons();
   const [isMounted, setIsMounted] = useState(false);
 
+  const [selectedSVG, setSelectedSVG] = useState<SVGIcons | null>(null);
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
-  const [selectedSVG, setSelectedSVG] = useState<SVGIcons | null>(null);
 
   const handleIconClick = (icon: SVGIcons) => {
     onIconSelect(icon.svgURL);
     // Assuming the retrieved 'url' contains raw SVG:
     setSelectedSVG(icon);
   };
+
   if (!isMounted) {
     return null;
   }

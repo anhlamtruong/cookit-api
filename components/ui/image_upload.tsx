@@ -5,19 +5,25 @@ import { Button } from "@/components/ui/button";
 import { ImagePlusIcon, Trash } from "lucide-react";
 import Image from "next/image";
 import { CldUploadWidget } from "next-cloudinary";
+import { Label } from "./label";
+import { cn } from "@/lib/utils";
 
 interface ImageUploadProps {
   disabled?: boolean;
   onChange: (value: string) => void;
   onRemove: (value: string) => void;
   value: string[];
+  id?: string;
+  className?: string;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
+  className,
   disabled,
   onChange,
   onRemove,
   value,
+  id,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -34,7 +40,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   }
 
   return (
-    <div>
+    <div className={cn(className)}>
       <ImageComponentList onRemove={onRemove} value={value} />
       <CldUploadWidget
         onUpload={onUpload}
@@ -45,15 +51,21 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             open();
           };
           return (
-            <Button
-              type="button"
-              disabled={disabled}
-              variant="secondary"
-              onClick={onClick}
-            >
-              <ImagePlusIcon className=" h-4 w-4 mr-2"></ImagePlusIcon>
-              Upload an Image
-            </Button>
+            <div className="flex flex-col gap-2 ">
+              {id != "" ? (
+                <Label htmlFor={id ?? ""}>Upload Your Image</Label>
+              ) : null}
+              <Button
+                id={id ?? ""}
+                type="button"
+                disabled={disabled}
+                variant="secondary"
+                onClick={onClick}
+              >
+                <ImagePlusIcon className=" h-4 w-4 mr-2"></ImagePlusIcon>
+                Upload an Image
+              </Button>
+            </div>
           );
         }}
       </CldUploadWidget>

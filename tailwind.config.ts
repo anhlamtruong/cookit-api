@@ -1,10 +1,11 @@
 import type { Config } from "tailwindcss";
-const defaultTheme = require("tailwindcss/defaultTheme");
-const colors = require("tailwindcss/colors");
+const {fontFamily} = require("tailwindcss/defaultTheme");
+const colors = require('tailwindcss/colors')
 const {
   default: flattenColorPalette,
 } = require("tailwindcss/lib/util/flattenColorPalette");
 
+/** @type {import('tailwindcss').Config} */
 const config = {
   darkMode: ["class"],
   content: [
@@ -23,6 +24,28 @@ const config = {
       },
     },
     colors: {
+      transparent: 'transparent',
+      current: 'currentColor',
+      black: colors.black,
+      white: colors.white,
+      gray: colors.gray,
+      emerald: colors.emerald,
+      indigo: colors.indigo,
+      yellow: colors.yellow,
+      zinc: {
+        "50": "#fafafa",
+        "100": "#f4f4f5",
+        "200": "#e4e4e7",
+        "300": "#d4d4d8",
+        "400": "#a1a1aa",
+        "500": "#71717a",
+        "600": "#52525b",
+        "700": "#3f3f46",
+        "800": "#27272a",
+        "900": "#18181b", 
+        "950": "#09090b"
+      },
+      
       light: {
         backgroundPrimary: "#ffffff",
         backgroundSecondary: "#e0e0e0",
@@ -98,10 +121,10 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ['"Proxima Nova"', ...defaultTheme.fontFamily.sans],
+        sans: ["var(--font-geist-sans)", ...fontFamily.sans],
       },
       colors: {
-        // ...colors,
+        
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

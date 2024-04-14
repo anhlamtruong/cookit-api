@@ -17,6 +17,7 @@ interface ImageSearcherProps {
   value: string;
   disable: boolean;
   id?: string;
+  className?: string;
 }
 
 export const ImageSearcher: FC<ImageSearcherProps> = ({
@@ -25,6 +26,7 @@ export const ImageSearcher: FC<ImageSearcherProps> = ({
   value,
   id,
   disable,
+  className,
 }) => {
   const searchParams = useSearchParams();
   const [inputValue, setInputValue] = useState("");
@@ -86,8 +88,8 @@ export const ImageSearcher: FC<ImageSearcherProps> = ({
   });
 
   return (
-    <div>
-      <Label htmlFor={id ?? ""}>Or Search For Your Image</Label>
+    <div className={cn(className)}>
+      <Label htmlFor={id ?? ""}>Or Quick Search For Your Image</Label>
       <Input
         id={id ?? ""}
         type="text"
@@ -99,17 +101,27 @@ export const ImageSearcher: FC<ImageSearcherProps> = ({
         placeholder="Search for images"
         disabled={isLoading || disable}
       />
-      {value ?? (
-        <div className="`z-50 w-82 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 grid grid-cols-3 gap-1`">
+      {value ? (
+        <div className=" relative w-[200px] h-[200px] rounded-md overflow-hidden  flex mb-4 justify-center p-1 border-primary-foreground border ">
           <Image
+            // style={{ display: "block" }}
             sizes="100"
             fill
-            className=" object-cover"
             alt="Image"
+            className=" object-cover"
             src={value}
           ></Image>
+          <div className="z-10 absolute top-2 right-2">
+            <Button
+              type="button"
+              onClick={() => onRemove(value)}
+              variant="destructive"
+            >
+              <Trash className=" h-4 w-4"></Trash>
+            </Button>
+          </div>
         </div>
-      )}
+      ) : null}
 
       <div
         className={cn(
@@ -117,8 +129,15 @@ export const ImageSearcher: FC<ImageSearcherProps> = ({
           !isPopoverOpen ? "hidden" : "grid"
         )}
       >
+        {inputValue != "" && !isLoading && !images ? (
+          <div> Waiting 2s to fetch your images 🕐</div>
+        ) : null}
         {isLoading && (
-          <DotLoader size={24} className=" items-center"></DotLoader>
+          <DotLoader
+            color="white"
+            size={24}
+            className="items-center"
+          ></DotLoader>
         )}
         {error && <ErrorComponent message={error.message}></ErrorComponent>}
         {images

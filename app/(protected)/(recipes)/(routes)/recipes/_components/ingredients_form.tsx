@@ -30,6 +30,7 @@ import {
 
 import { IconPickerFirebase } from "@/components/ui/firebase/icon_picker";
 import { ImageSearcher } from "@/components/ui/firebase/image_searcher";
+import ImageUpload from "@/components/ui/image_upload";
 
 // Define a schema for a single ingredient
 const ingredientSchema = z.object({
@@ -59,6 +60,8 @@ export const IngredientForm: React.FC<IngredientForm> = ({
 }) => {
   const params = useParams();
   const router = useRouter();
+  const [hasImageUploaded, setHasImageUploaded] = useState(false);
+  const [hasImageSearchSelected, setHasImageSearchSelected] = useState(false);
 
   const title = initialDataIngredient ? "Edit Ingredient" : "Add Ingredient";
   const description = initialDataIngredient
@@ -178,7 +181,7 @@ export const IngredientForm: React.FC<IngredientForm> = ({
                 <SecondHeading
                   title={`Ingredient ${index + 1}`}
                 ></SecondHeading>
-                <div className=" -mt-8 relative gap-4 items-center grid grid-cols-2 p-8">
+                <div className=" -mt-8 relative gap-4 items-start content-start justify-start grid grid-cols-2 p-8">
                   <FormField
                     control={form.control}
                     name={`ingredients.${index}.name`}
@@ -262,17 +265,40 @@ export const IngredientForm: React.FC<IngredientForm> = ({
                       return (
                         <FormItem>
                           <FormControl>
-                            <ImageSearcher
-                              value={field.value ?? ""}
-                              id={`ingredients.${index}.imageURL.search`}
-                              onImageSelect={(url: string) =>
-                                field.onChange(url)
-                              }
-                              onRemove={() => {
-                                field.onChange("");
-                              }}
-                              disable={false}
-                            ></ImageSearcher>
+                            <div>
+                              <ImageUpload
+                                className={`${
+                                  hasImageSearchSelected ? "hidden" : ""
+                                }`}
+                                id={`ingredients.${index}.imageURL.search`}
+                                value={field.value ? [field.value] : []}
+                                onChange={(url) => {
+                                  field.onChange(url);
+                                  setHasImageUploaded(true);
+                                }}
+                                onRemove={() => {
+                                  field.onChange("");
+                                  setHasImageUploaded(false);
+                                }}
+                                disabled={loading || hasImageSearchSelected}
+                              ></ImageUpload>
+                              <ImageSearcher
+                                className={`${
+                                  hasImageUploaded ? "hidden" : ""
+                                }`}
+                                value={field.value ?? ""}
+                                id={`ingredients.${index}.imageURL.search`}
+                                onImageSelect={(url: string) => {
+                                  field.onChange(url);
+                                  setHasImageSearchSelected(true);
+                                }}
+                                onRemove={() => {
+                                  field.onChange("");
+                                  setHasImageSearchSelected(false);
+                                }}
+                                disable={hasImageUploaded || loading}
+                              ></ImageSearcher>
+                            </div>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -283,7 +309,7 @@ export const IngredientForm: React.FC<IngredientForm> = ({
                     control={form.control}
                     name={`ingredients.${index}.iconURL`}
                     render={({ field }) => (
-                      <FormItem className="flex flex-col">
+                      <FormItem className="flex flex-col mt-5 ">
                         <FormLabel htmlFor={`ingredients.${index}.iconURL`}>
                           Select Icon For Your Ingredient
                         </FormLabel>

@@ -17,7 +17,8 @@ import { FaUser } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/authenticate/use_current_user";
 import LogoutButton from "@/components/auth/logout_button";
 import { UserSettingsForm } from "@/app/(protected)/sassy_authy/settings/_components/setting_form";
-import ThemeSwitcher from "../ui/theme_switcher";
+import { ThemeSwitcher, ModeToggle } from "../theme-switcher";
+// import { ModeToggle } from "../theme-toggle";
 export const UserButton = () => {
   const user = useCurrentUser();
   return (
@@ -48,7 +49,7 @@ export const UserButton = () => {
                 <span>Logout</span>
               </div>
             </LogoutButton>
-            <ThemeSwitcher horizontal={true}></ThemeSwitcher>
+            <ModeToggle></ModeToggle>
           </div>
 
           <DrawerFooter>

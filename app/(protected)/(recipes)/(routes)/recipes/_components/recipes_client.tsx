@@ -4,7 +4,14 @@ import { Tabs } from "@/components/ui/tabs";
 import { RecipeForm } from "./recipe_form";
 import { useStyles } from "@/hooks/store/useStyles";
 import { IngredientForm } from "./ingredients_form";
+import { useTheme } from "next-themes";
+import { useConfig } from "@/hooks/ui/use-config";
+import { themes } from "@/registry/themes";
 export const RecipesClient = () => {
+  const { theme: mode } = useTheme();
+  const [config] = useConfig();
+
+  const theme = themes.find((theme) => theme.name === config.theme);
   const tabs = [
     {
       title: "Ingredients",
@@ -63,9 +70,9 @@ export const RecipesClient = () => {
   return (
     <div className="h-[20rem] md:h-[40rem] [perspective:1000px] relative b flex flex-col max-w-5xl mx-auto w-full  items-start justify-start my-40">
       <Tabs
-        tabClassName="bg-light-backgroundSecondary"
-        activeTabClassName="bg-light-backgroundTertiary"
-        contentClassName={"bg-light-backgroundPrimary"}
+        tabClassName=""
+        activeTabClassName="text-muted-foreground"
+        contentClassName={"bg-background text-muted-foreground"}
         tabs={tabs}
       />
     </div>
