@@ -31,13 +31,26 @@ import {
 import { IconPickerFirebase } from "@/components/ui/firebase/icon_picker";
 import { ImageSearcher } from "@/components/ui/firebase/image_searcher";
 import ImageUpload from "@/components/ui/image_upload";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Ingredients } from "@/lib/types/ingredients_types";
 
 // Define a schema for a single ingredient
 const ingredientSchema = z.object({
   name: z.string().min(1, "Name is required"),
   measurement: z.string(),
   source: z.string(),
-  category: z.string(),
+  category: z.string({
+    required_error: "Please choose a category for this ingredient",
+  }),
+  isKeyIngredient: z.boolean().default(false),
+  groceryStore: z.string().optional(),
+  description: z.string().optional(),
   imageURL: z.string().url().optional(),
   iconURL: z.string().url().optional(),
 });
@@ -90,6 +103,7 @@ export const IngredientForm: React.FC<IngredientForm> = ({
               category: "",
               measurement: "",
               source: "",
+
               imageURL: "",
               iconURL: "",
             },
@@ -208,13 +222,21 @@ export const IngredientForm: React.FC<IngredientForm> = ({
                       return (
                         <FormItem>
                           <FormLabel>Category</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Category name"
-                              {...field}
-                            />
-                          </FormControl>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select a verified email to display" />
+                              </SelectTrigger>
+                            </FormControl>
+
+                            <SelectContent>{
+                              {Object.keys(Ingredients).map()}
+                              
+                              }</SelectContent>
+                          </Select>
                           <FormMessage />
                         </FormItem>
                       );

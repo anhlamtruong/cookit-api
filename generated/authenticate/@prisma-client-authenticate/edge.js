@@ -186,7 +186,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "D:\\Fall2022\\Webiste\\cookit-api\\generated\\authenticate\\@prisma-client-authenticate",
+      "value": "/Users/minhcutie/Documents/cookit-api/generated/authenticate/@prisma-client-authenticate",
       "fromEnvVar": null
     },
     "config": {
@@ -195,7 +195,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
@@ -213,6 +213,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -221,8 +222,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\r\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\r\n\r\ngenerator client {\r\n  provider = \"prisma-client-js\"\r\n  output   = \"../../generated/authenticate/@prisma-client-authenticate\"\r\n  \r\n}\r\n\r\ndatasource db {\r\n  provider  = \"postgresql\"\r\n  url  \t    = env(\"DATABASE_URL_AUTHENTICATE\")\r\n  directUrl = env(\"DIRECT_URL_AUTHENTICATE\")\r\n}\r\n\r\nenum UserRole{\r\n  ADMIN\r\n  USER\r\n  CHEF\r\n}\r\n\r\nmodel User {\r\n  id            String    @id @default(cuid())\r\n  name          String?\r\n  email         String?   @unique\r\n  emailVerified DateTime?\r\n  image         String?\r\n  password      String?\r\n  role          UserRole @default(USER)\r\n  accounts      Account[]\r\n  isTwoFactorEnabled Boolean @default(false)\r\n  twoFactorConfirmation TwoFactorConfirmation? \r\n  storeIds      String[] @default([])\r\n  // cookitStore CookitStore @relation(\"UserToCookitStore\")\r\n}\r\n\r\nmodel Account {\r\n  id                 String  @id @default(cuid())\r\n  userId             String\r\n  type               String\r\n  provider           String\r\n  providerAccountId  String\r\n  refresh_token      String?  @db.Text\r\n  access_token       String?  @db.Text\r\n  expires_at         Int?\r\n  token_type         String?\r\n  scope              String?\r\n  id_token           String?  @db.Text\r\n  session_state      String?\r\n\r\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\r\n\r\n  @@unique([provider, providerAccountId])\r\n}\r\n\r\n\r\nmodel VerificationToken{\r\n  id String @id @default(cuid())\r\n  email String\r\n  token String @unique\r\n  expires DateTime\r\n  @@unique([email, token])\r\n}\r\nmodel PasswordResetToken{\r\n  id String @id @default(cuid())\r\n  email String\r\n  token String @unique\r\n  expires DateTime\r\n  @@unique([email, token])\r\n}\r\n\r\nmodel TwoFactorToken{\r\n  id String @id @default(cuid())\r\n  email String\r\n  token String @unique\r\n  expires DateTime\r\n  @@unique([email, token])\r\n}\r\nmodel TwoFactorConfirmation{\r\n  id String @id @default(cuid())\r\n  userId String \r\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\r\n  @@unique([userId])\r\n}\r\nmodel CookitStore{\r\n  id String @id @default(cuid())\r\n  userId String \r\n  // user User @relation(\"UserToCookitStore\",fields: [userId], references: [id])\r\n  storeIds String[]\r\n  @@unique([userId])\r\n}\r\n",
-  "inlineSchemaHash": "1b019c641c0ba6b380001ae841929d61a26d9d92ba11c1ab996f411881dd18eb",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../../generated/authenticate/@prisma-client-authenticate\"\n  \n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url  \t    = env(\"DATABASE_URL_AUTHENTICATE\")\n  directUrl = env(\"DIRECT_URL_AUTHENTICATE\")\n}\n\nenum UserRole{\n  ADMIN\n  USER\n  CHEF\n}\n\nmodel User {\n  id            String    @id @default(cuid())\n  name          String?\n  email         String?   @unique\n  emailVerified DateTime?\n  image         String?\n  password      String?\n  role          UserRole @default(USER)\n  accounts      Account[]\n  isTwoFactorEnabled Boolean @default(false)\n  twoFactorConfirmation TwoFactorConfirmation? \n  storeIds      String[] @default([])\n  // cookitStore CookitStore @relation(\"UserToCookitStore\")\n}\n\nmodel Account {\n  id                 String  @id @default(cuid())\n  userId             String\n  type               String\n  provider           String\n  providerAccountId  String\n  refresh_token      String?  @db.Text\n  access_token       String?  @db.Text\n  expires_at         Int?\n  token_type         String?\n  scope              String?\n  id_token           String?  @db.Text\n  session_state      String?\n\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@unique([provider, providerAccountId])\n}\n\n\nmodel VerificationToken{\n  id String @id @default(cuid())\n  email String\n  token String @unique\n  expires DateTime\n  @@unique([email, token])\n}\nmodel PasswordResetToken{\n  id String @id @default(cuid())\n  email String\n  token String @unique\n  expires DateTime\n  @@unique([email, token])\n}\n\nmodel TwoFactorToken{\n  id String @id @default(cuid())\n  email String\n  token String @unique\n  expires DateTime\n  @@unique([email, token])\n}\nmodel TwoFactorConfirmation{\n  id String @id @default(cuid())\n  userId String \n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n  @@unique([userId])\n}\nmodel CookitStore{\n  id String @id @default(cuid())\n  userId String \n  // user User @relation(\"UserToCookitStore\",fields: [userId], references: [id])\n  storeIds String[]\n  @@unique([userId])\n}\n",
+  "inlineSchemaHash": "f830c3f4425cf152b7e03317254d90307b08757e12eb5478d11db65d30f6db0a",
   "copyEngine": true
 }
 config.dirname = '/'
