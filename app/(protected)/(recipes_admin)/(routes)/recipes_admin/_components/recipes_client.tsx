@@ -19,11 +19,7 @@ export const RecipesClient = () => {
       content: (
         <div className=" w-full overflow-y-auto overflow-auto relative h-full rounded-2xl p-10 text-xl md:text-4xl  text-white bg-gradient-to-br from-purple-700 to-violet-900">
           <Suspense fallback={<p>Loading Recipes Form</p>}>
-            <IngredientsForm
-              initialDataIngredient={null}
-              categories={[]}
-              sizes={[]}
-            />
+            <IngredientsForm initialDataIngredient={null} />
           </Suspense>
         </div>
       ),
