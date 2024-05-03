@@ -4,8 +4,9 @@ import React, { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Theme, themeIcons, useTheme } from "@/contexts/ThemeContext";
 import { Moon, Sun, TowerControl, Waves } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-const ThemeSwitcher: React.FC = () => {
+const ThemeSwitcher = ({ horizontal = false }: { horizontal?: boolean }) => {
   const { theme, setTheme, themeColors } = useTheme();
   const [icon, setIcon] = useState<React.ReactNode>(themeIcons.light);
   const { backgroundPrimary, textPrimary, hoverBorder, hoverBackground } =
@@ -20,9 +21,23 @@ const ThemeSwitcher: React.FC = () => {
     return {
       backgroundColor: backgroundPrimary,
       color: textPrimary,
+
+      outline: "1px solid transparent",
+      transformOrigin: "top",
+      transition:
+        "background-color 200ms ease, border-color 200ms ease, border-width 200ms ease",
+    };
+  }, [backgroundPrimary, textPrimary]);
+  const containerStyleHorizontal = useMemo(() => {
+    return {
+      backgroundColor: backgroundPrimary,
+      color: textPrimary,
       outline: "1px solid transparent",
       transition:
         "background-color 200ms ease, border-color 200ms ease, border-width 200ms ease",
+      top: 0, // Align to the top of the button
+      left: "100%", // Position to the right of the button
+      transformOrigin: "top left",
     };
   }, [backgroundPrimary, textPrimary]);
   const handleMouseEnter = (
@@ -43,26 +58,47 @@ const ThemeSwitcher: React.FC = () => {
     event.currentTarget.style.outlineColor = "transparent";
   };
 
-  const dropdownVariants = {
-    open: {
-      opacity: 1,
-      scaleY: 1,
-      height: "auto",
-      transition: {
-        opacity: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
-        scaleY: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
-      },
-    },
-    closed: {
-      opacity: 0,
-      scaleY: 0,
-      height: 0,
-      transition: {
-        opacity: { duration: 0.2, ease: [0.4, 0, 0.2, 1] },
-        scaleY: { duration: 0.2, ease: [0.4, 0, 0.2, 1] },
-      },
-    },
-  };
+  const dropdownVariants = horizontal
+    ? {
+        open: {
+          opacity: 1,
+          scaleX: 1,
+          width: "auto", // Ensure the width can adjust based on content, or set a specific width
+          transition: {
+            opacity: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
+            scaleX: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
+          },
+        },
+        closed: {
+          opacity: 0,
+          scaleX: 0,
+          width: 0, // Collapse the width when closed
+          transition: {
+            opacity: { duration: 0.2, ease: [0.4, 0, 0.2, 1] },
+            scaleX: { duration: 0.2, ease: [0.4, 0, 0.2, 1] },
+          },
+        },
+      }
+    : {
+        open: {
+          opacity: 1,
+          scaleY: 1,
+          height: "auto",
+          transition: {
+            opacity: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
+            scaleY: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
+          },
+        },
+        closed: {
+          opacity: 0,
+          scaleY: 0,
+          height: 0,
+          transition: {
+            opacity: { duration: 0.2, ease: [0.4, 0, 0.2, 1] },
+            scaleY: { duration: 0.2, ease: [0.4, 0, 0.2, 1] },
+          },
+        },
+      };
 
   return (
     <div
@@ -85,11 +121,15 @@ const ThemeSwitcher: React.FC = () => {
             initial="closed"
             animate="open"
             exit="closed"
-            style={containerStyle}
+            style={horizontal ? containerStyleHorizontal : containerStyle}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             variants={dropdownVariants}
-            className={` origin-top absolute rounded z-10 mt-2  border shadow`}
+            className={cn(
+              horizontal
+                ? "flex rounded z-10 mt-2  border shadow "
+                : `rounded z-10 mt-2  border shadow`
+            )}
           >
             <li
               style={containerStyle}

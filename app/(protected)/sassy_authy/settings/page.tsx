@@ -1,9 +1,6 @@
 "use client";
 
-import { logout } from "@/actions/logout";
-import ThemeSwitcher from "@/components/ui/theme_switcher";
 import { useCurrentUser } from "@/hooks/authenticate/use_current_user";
-import { useStyles } from "@/hooks/authenticate/use_styles";
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";

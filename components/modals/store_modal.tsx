@@ -59,7 +59,8 @@ export const StoreModal = () => {
           form.reset();
           storeModal.onClose();
         },
-        onError: () => {
+        onError: (error) => {
+          console.error(error);
           toast.error("Something went wrong :(, please try again");
         },
       });

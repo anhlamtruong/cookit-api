@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { SizeForm } from "./_components/size_form";
 import prismaStore from "@/lib/service/prisma_store";
-import { ClimbingBoxLoader } from "react-spinners";
+import LoadingOverlay from "@/components/loading_overlay";
 
 const SizePage = async ({ params }: { params: { sizeId: string } }) => {
   let size = null;
@@ -14,7 +14,7 @@ const SizePage = async ({ params }: { params: { sizeId: string } }) => {
   }
 
   return (
-    <Suspense fallback={<ClimbingBoxLoader />}>
+    <Suspense fallback={<LoadingOverlay />}>
       <div className=" flex-col">
         <div className=" flex-1 space-y-4 p-8 pt-6">
           <SizeForm initialDataSize={size} />

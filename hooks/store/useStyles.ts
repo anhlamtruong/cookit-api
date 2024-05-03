@@ -48,6 +48,12 @@ export const useStyles = () => {
         borderColor: borderPrimary,
         borderRadius: "0.5rem", // Updated borderRadius
       },
+      invertContainerWithBorder: {
+        background: textPrimary,
+        color: backgroundPrimary,
+        borderColor: textPrimary,
+        borderRadius: "0.5rem", // Updated borderRadius
+      },
       hoverText: {
         color: hoverText,
       },

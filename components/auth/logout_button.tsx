@@ -27,7 +27,7 @@ const LogoutButton: React.FC<LogoutButtonProps> = ({ children }) => {
       disabled={isPending}
       variant={"destructive"}
       onClick={onClick}
-      className=" items-center w-1/2 cursor-pointer"
+      className=" items-center w-36 cursor-pointer"
     >
       {children}
       {isPending && <BeatLoader></BeatLoader>}

@@ -3,7 +3,8 @@ import prismaStore from "@/lib/service/prisma_store";
 import { format } from "date-fns";
 import { BillboardColumn } from "./_components/columns";
 import { Suspense } from "react";
-import { ClimbingBoxLoader } from "react-spinners";
+import LoadingOverlay from "@/components/loading_overlay";
+
 const BillboardPage = async ({ params }: { params: { storeId: string } }) => {
   const billboards = await prismaStore.billboard.findMany({
     where: { storeId: params.storeId },
@@ -18,7 +19,7 @@ const BillboardPage = async ({ params }: { params: { storeId: string } }) => {
     createdAt: format(item.createdAt, "MMMM do, yyyy"),
   }));
   return (
-    <Suspense fallback={<ClimbingBoxLoader />}>
+    <Suspense fallback={<LoadingOverlay />}>
       <div className="flex-col">
         <div className="flex-1 space-y-4 p-8 pt-6">
           <BillboardClient data={formattedBillboards}></BillboardClient>

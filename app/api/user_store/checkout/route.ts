@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
     }
+    console.log(userId);
 
     if (!orders || orders.length === 0) {
       return new NextResponse("Orders data is required", { status: 400 });

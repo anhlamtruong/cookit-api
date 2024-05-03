@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { MenusColumn } from "./_components/columns";
 import { formatter } from "@/lib/utils";
 import { Suspense } from "react";
-import { ClimbingBoxLoader } from "react-spinners";
+import LoadingOverlay from "@/components/loading_overlay";
 const MenusPage = async ({ params }: { params: { storeId: string } }) => {
   const menus = await prismaStore.menu.findMany({
     where: { storeId: params.storeId },
@@ -28,7 +28,7 @@ const MenusPage = async ({ params }: { params: { storeId: string } }) => {
     createdAt: format(item.createdAt, "MMMM do, yyyy"),
   }));
   return (
-    <Suspense fallback={<ClimbingBoxLoader />}>
+    <Suspense fallback={<LoadingOverlay />}>
       <div className="flex-col">
         <div className="flex-1 space-y-4 p-8 pt-6">
           <MenusClient data={formattedMenus}></MenusClient>

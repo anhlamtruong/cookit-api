@@ -105,10 +105,12 @@ export const CategoryForm: React.FC<CategoryForm> = ({
 
       router.refresh();
       router.push(`/store_admin/${params.storeId}/categories`);
-      toast.arguments("SUCCESSFULLY DELETED CATEGORY");
+      toast.arguments("Category successfully deleted!");
     } catch (error) {
       console.error(error);
-      toast.error("Make sure you removed all menus using this category first.");
+      toast.error(
+        "Cannot delete category: It is associated with menus. Please remove menu associations first."
+      );
     } finally {
       setLoading(false);
       setOpen(false);

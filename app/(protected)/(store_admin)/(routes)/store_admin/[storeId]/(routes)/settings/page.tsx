@@ -4,7 +4,7 @@ import ErrorComponent from "@/components/ui/error";
 import SettingsForm from "./_components/settings_form";
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import useStoreData from "@/hooks/store/useStore";
+import { useStoreData } from "@/hooks/store/useStore";
 
 interface SettingsPageProps {
   params: {
@@ -13,7 +13,7 @@ interface SettingsPageProps {
 }
 
 const AdminSettingPage: React.FC<SettingsPageProps> = ({ params }) => {
-  const { storeData } = useStoreData();
+  const { data: storeData } = useStoreData(params.storeId);
   const router = useRouter();
   useEffect(() => {
     if (!storeData) {

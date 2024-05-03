@@ -1,10 +1,11 @@
+import LoadingOverlay from "@/components/loading_overlay";
 import { ChefClient } from "./_components/chef_client";
 
 import { Suspense } from "react";
-import { ClimbingBoxLoader } from "react-spinners";
+
 const ChefPage = async ({ params }: { params: { storeId: string } }) => {
   return (
-    <Suspense fallback={<ClimbingBoxLoader />}>
+    <Suspense fallback={<LoadingOverlay />}>
       <div className="flex-col  ">
         <div className="flex-1 space-y-4 p-8 pt-6">
           <ChefClient></ChefClient>

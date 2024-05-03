@@ -144,7 +144,7 @@ export const MenuForm: React.FC<MenuForm> = ({
     } catch (error) {
       console.error(error);
       toast.error(
-        "Make sure you removed all categories using this menus first."
+        "Cannot delete menu: It is associated with categories. Please remove category associations first."
       );
     } finally {
       setLoading(false);

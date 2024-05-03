@@ -22,7 +22,11 @@ import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/ui/icons";
 import { toast } from "sonner";
 import axios from "axios";
-import useStoreData from "@/hooks/store/useStore";
+import {
+  useRemoveStore,
+  useStoreData,
+  useUpdateStore,
+} from "@/hooks/store/useStore";
 import { AlertModal } from "@/components/modals/alert_modal";
 import { ApiAlert } from "@/components/ui/api_alert";
 import useOrigin from "@/hooks/store/use_origin";
@@ -42,7 +46,8 @@ const SettingsForm: React.FC<SettingsForm> = ({ initialDataStore }) => {
   const router = useRouter();
   const origin = useOrigin();
   const [open, setOpen] = useState(false);
-  const { setStoreData, removeStoreData } = useStoreData();
+  const { mutate: updateStore } = useUpdateStore(initialDataStore.id);
+  const { mutate: removerStore } = useRemoveStore(initialDataStore.id);
   const [loading, setLoading] = useState(false);
 
   const form = useForm<SettingsFormValues>({
@@ -62,7 +67,7 @@ const SettingsForm: React.FC<SettingsForm> = ({ initialDataStore }) => {
         `/api/admin/${params.storeId}`,
         data
       )) as Store;
-      setStoreData(newStore);
+      updateStore({ updateStore: newStore });
       router.refresh();
 
       toast.success("Successfully updated store");
@@ -75,8 +80,8 @@ const SettingsForm: React.FC<SettingsForm> = ({ initialDataStore }) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/admin/${params.storeId}`);
-      removeStoreData();
+      // await axios.delete(`/api/admin/${params.storeId}`);
+      removerStore({ storeId: params.storeId.toString() });
       toast.success("SUCCESSFULLY DELETED STORE");
     } catch (error) {
       toast.error("Make sure you removed all products and categories first.");

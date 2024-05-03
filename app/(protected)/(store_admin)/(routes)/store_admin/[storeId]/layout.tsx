@@ -5,12 +5,11 @@ import React, { useEffect } from "react";
 
 import LoadingCarrot from "@/components/ui/loading/loading-carrot";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useUserData } from "@/hooks/store/useUser";
-import useStoreData from "@/hooks/store/useStore";
+import { useStoreData } from "@/hooks/store/useStore";
 import useAsyncDataFetcher from "@/hooks/store/useAsyncDataFetcher";
 import { Store } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import { UserRole } from "@/generated/authenticate/@prisma-client-authenticate";
-import { NavigationBar } from "@/app/(protected)/(store_admin)/_components/admin_navigation_bar";
+import { NavigationBar } from "@/app/(protected)/(store_admin)/_components/store_navigation_bar";
 import { RoleGate } from "@/components/auth/role_gate";
 
 export default function DashboardLayout({
@@ -22,21 +21,24 @@ export default function DashboardLayout({
 }) {
   const router = useRouter();
   const { storeId } = params;
-  const { setStoreData } = useStoreData();
-
+  // const { setStoreData } = useStoreData();
   const {
     data: storeData,
     isLoading: isStoreLoading,
     error: storeError,
-  } = useAsyncDataFetcher<Store>(`/api/admin/${storeId}`);
-
+  } = useStoreData(storeId);
+  // const {
+  //   data: storeData,
+  //   isLoading: isStoreLoading,
+  //   error: storeError,
+  // } = useAsyncDataFetcher<Store>(`/api/admin/${storeId}`);
   useEffect(() => {
     if ((!storeData?.id || storeError) && !isStoreLoading) {
       router.push(`/store_admin`);
     }
 
-    setStoreData(storeData as Store);
-  }, [storeData, storeError, router, setStoreData, isStoreLoading]);
+    // setStoreData(storeData as Store);
+  }, [storeData, storeError, router, isStoreLoading]);
 
   if (isStoreLoading) {
     return <LoadingCarrot text={"Loading Admin Dashboard"}></LoadingCarrot>;
@@ -47,7 +49,7 @@ export default function DashboardLayout({
   }
 
   return storeError ? (
-    <div>{storeError.massage}</div>
+    <div>{storeError.message}</div>
   ) : (
     <>
       <RoleGate allowedRole={[UserRole.CHEF, UserRole.ADMIN]}>

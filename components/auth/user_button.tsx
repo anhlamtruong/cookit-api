@@ -17,8 +17,12 @@ import { FaUser } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/authenticate/use_current_user";
 import LogoutButton from "@/components/auth/logout_button";
 import { UserSettingsForm } from "@/app/(protected)/sassy_authy/settings/_components/setting_form";
+import { ModeToggle } from "../theme-switcher";
+import { RouterComboBox } from "@/app/(protected)/sassy_authy/settings/_components/router_combo_box";
+
 export const UserButton = () => {
   const user = useCurrentUser();
+
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -47,6 +51,8 @@ export const UserButton = () => {
                 <span>Logout</span>
               </div>
             </LogoutButton>
+            <RouterComboBox></RouterComboBox>
+            <ModeToggle></ModeToggle>
           </div>
 
           <DrawerFooter>

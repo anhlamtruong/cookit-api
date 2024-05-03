@@ -6,6 +6,8 @@ import { getUserById } from "@/data/user";
 import { getTwoFactorConfirmationByUserId } from "@/data/two_factor_confirmation";
 import { getAccountByUserId } from "@/data/account";
 import { UserRole } from "./generated/authenticate/@prisma-client-authenticate";
+import { db } from "./lib/firebase/firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 export const {
   handlers: { GET, POST },
   auth,
@@ -28,11 +30,27 @@ export const {
   callbacks: {
     async signIn({ user, account }) {
       // Allow OAuth without email verification
+
       if (account?.provider !== "credentials") {
+        const existingUser = await getUserById(user.id);
+        try {
+          const userDocRef = doc(db, "users", existingUser?.id ?? "");
+
+          const userDocSnap = await getDoc(userDocRef);
+
+          if (!userDocSnap.exists()) {
+            await setDoc(userDocRef, {
+              ingredients: [],
+            });
+            console.info("User document created in Firebase"); // For debugging
+          }
+        } catch (error) {
+          console.error("Error checking or creating Firebase document:", error);
+        }
         return true;
       }
-      const existingUser = await getUserById(user.id);
 
+      const existingUser = await getUserById(user.id);
       // Prevent sign in without email verification
       if (!existingUser?.emailVerified) {
         return false;
@@ -48,6 +66,20 @@ export const {
         await prismaAuthenticate.twoFactorConfirmation.delete({
           where: { id: twoFactorConfirmation.id },
         });
+      }
+      try {
+        const userDocRef = doc(db, "users", existingUser.id);
+
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (!userDocSnap.exists()) {
+          await setDoc(userDocRef, {
+            ingredients: [],
+          });
+          console.info("User document created in Firebase"); // For debugging
+        }
+      } catch (error) {
+        console.error("Error checking or creating Firebase document:", error);
       }
 
       return true;
