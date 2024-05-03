@@ -8,7 +8,7 @@ import { useStores } from "@/hooks/store/useStore";
 import { useStoreModal } from "@/hooks/store/useStoreModal";
 import { useRouter } from "next/navigation";
 
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 
 const StoreAdminPage: React.FC = ({}) => {
   const onOpen = useStoreModal((state) => state.onOpen);
@@ -34,10 +34,12 @@ const StoreAdminPage: React.FC = ({}) => {
 
   return !chefData ? (
     <div className=" flex flex-col w-screen h-screen self-center justify-center items-center">
-      <ChefModal />
+      <Suspense fallback={<p>Loading Chef Modal</p>}>
+        <ChefModal />
+      </Suspense>
     </div>
   ) : !isLoading ? (
-    <div>Redirecting to Store</div>
+    <div>Redirecting to Store ...</div>
   ) : (
     <Skeleton></Skeleton>
   );

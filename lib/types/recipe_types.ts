@@ -1,9 +1,13 @@
 interface Ingredient {
+  id: string;
   name: string; // In case you want to store names directly
   category: string;
   source: string;
-  imageURL: string;
   measurement: string;
+  description?: string;
+  imageURL?: string;
+  iconURL?: string;
+  createAt?: string;
 }
 
 interface Image {

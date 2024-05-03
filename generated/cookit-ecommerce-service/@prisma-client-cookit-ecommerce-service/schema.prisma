@@ -89,6 +89,7 @@ model Menu {
   description       String?
   pickupDate        DateTime?       // When the customer plans to pick up the order
   price             Float
+  ingredient        Ingredient[]
   isFeatured        Boolean         @default(false)
   isArchived        Boolean         @default(false)
   createdAt         DateTime        @default(now())
@@ -168,6 +169,19 @@ model ProfilePictures {
   updatedAt   DateTime @updatedAt
 
   @@index([chefId])
+}
+
+model Ingredient{
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  menuId      String   @db.ObjectId
+  menu        Menu     @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  name        String
+  measurement String
+  quantity    Float
+  category    String
+  description String?
+  iconUrl     String?
+  imageUrl    String?
 }
 
 

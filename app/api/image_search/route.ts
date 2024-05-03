@@ -1,7 +1,7 @@
 // import { UserRole } from "@/generated/authenticate/@prisma-client-authenticate";
 // import { Prisma } from "@/generated/cookit-ecommerce-service/@prisma-client-cookit-ecommerce-service";
 import { currentUser } from "@/lib/auth";
-import { redis } from "@/lib/redis/redis";
+import { redis } from "@/lib/redis/cache/redis";
 import axios from "axios";
 
 import { NextRequest, NextResponse } from "next/server";

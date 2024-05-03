@@ -216,6 +216,18 @@ exports.Prisma.ProfilePicturesScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.IngredientScalarFieldEnum = {
+  id: 'id',
+  menuId: 'menuId',
+  name: 'name',
+  measurement: 'measurement',
+  quantity: 'quantity',
+  category: 'category',
+  description: 'description',
+  iconUrl: 'iconUrl',
+  imageUrl: 'imageUrl'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -247,7 +259,8 @@ exports.Prisma.ModelName = {
   OrderItem: 'OrderItem',
   Size: 'Size',
   Image: 'Image',
-  ProfilePictures: 'ProfilePictures'
+  ProfilePictures: 'ProfilePictures',
+  Ingredient: 'Ingredient'
 };
 
 /**

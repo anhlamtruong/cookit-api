@@ -17,7 +17,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SettingsSchema } from "@/schemas";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { settings } from "@/actions/settings";
 import {
@@ -38,6 +37,7 @@ import { RoleGate } from "@/components/auth/role_gate";
 
 export const UserSettingsForm = () => {
   const user = useCurrentUser();
+
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
   const { update } = useSession();
@@ -208,11 +208,10 @@ export const UserSettingsForm = () => {
         <FormError message={error} />
         <FormSuccess message={success} />
         <div className=" flex items-center gap-2">
-          <Button disabled={isPending} type="submit">
+          <Button className="w-24" disabled={isPending} type="submit">
             Save
           </Button>
           {isPending && <ClockLoader size={30}></ClockLoader>}
-          
         </div>
       </form>
     </Form>

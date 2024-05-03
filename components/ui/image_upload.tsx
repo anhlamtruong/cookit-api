@@ -102,6 +102,7 @@ export const ImageComponentList = ({
           <Image
             sizes="100"
             fill
+            loading="lazy"
             className=" object-cover"
             alt="Image"
             src={url}

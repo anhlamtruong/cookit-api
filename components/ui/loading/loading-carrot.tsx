@@ -1,8 +1,6 @@
-// components/LoadingCarrot.tsx
-
 import React from "react";
-import { motion } from "framer-motion";
 import { CSSProperties } from "react";
+import { ClockLoader } from "react-spinners";
 
 interface LoadingCarrotProps {
   text?: String;
@@ -20,13 +18,6 @@ const LoadingCarrot: React.FC<LoadingCarrotProps> = ({
     flexDirection: "column",
   };
 
-  const carrotAnimation = {
-    animate: {
-      color: ["#ff0000", "#00ff00", "#0000ff", "#ff0000"], // Cycle through colors
-      transition: { duration: 2, loop: Infinity, ease: "linear" },
-    },
-  };
-
   const dotAnimation = {
     animate: {
       opacity: [0, 1, 0],
@@ -36,11 +27,16 @@ const LoadingCarrot: React.FC<LoadingCarrotProps> = ({
 
   return (
     <div style={loadingContainer}>
-      <motion.img
-        src="/loading/loading-carrot.png"
+      <ClockLoader color="orange" className="text-foreground ora"></ClockLoader>
+      <p>{`${text ?? "Loading"} `}</p>
+      {/* <Image
+        sizes="20"
+        priority
+        src="/loading/loading-carrot.webp"
         alt="Loading"
-        style={{ width: "100px" }} // Adjust size as needed
-        {...carrotAnimation}
+        width={20}
+        height={20}
+        style={{ width: "100px" }}
       />
       <motion.div>
         {`${text ?? "Loading"} `}
@@ -51,7 +47,7 @@ const LoadingCarrot: React.FC<LoadingCarrotProps> = ({
         <motion.span {...dotAnimation} style={{ animationDelay: "0.4s" }}>
           .
         </motion.span>
-      </motion.div>
+      </motion.div> */}
     </div>
   );
 };
