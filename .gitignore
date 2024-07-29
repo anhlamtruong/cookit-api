@@ -43,3 +43,6 @@ lib/firebase/config.js
 
 #AWS
 cookit-redis.pem
+
+#Services
+services

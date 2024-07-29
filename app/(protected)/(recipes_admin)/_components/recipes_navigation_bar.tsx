@@ -1,16 +1,26 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { Menu } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React from "react";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { useMedia } from "react-use";
 
 const MainNavigationBar = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLElement>) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
   const pathname = usePathname();
-
+  const isMobile = useMedia("(max-width: 1024px)", false);
+  const onClick = (href: string) => {
+    router.push(href);
+    setIsOpen(false);
+  };
   const recipes_routes = [
     {
       href: `/recipes_admin/ingredients`,
@@ -22,26 +32,63 @@ const MainNavigationBar = ({
       label: "Recipes",
       active: pathname === `/recipes_admin/recipes`,
     },
+    {
+      href: `/recipes_admin/videos`,
+      label: "Videos",
+      active: pathname === `/recipes_admin/videos`,
+    },
   ];
   return (
-    <nav className={cn("flex items-center space-x-4 lg:space-x-6")}>
-      {recipes_routes.map((route) => {
-        return (
-          <Link
-            key={route.href}
-            href={route.href}
-            className={cn(
-              " text-sm font-medium transition-colors hover:text-primary",
-              route.active
-                ? "text-black dark:text-white "
-                : "text-muted-foreground"
-            )}
-          >
-            {route.label}
-          </Link>
-        );
-      })}
-    </nav>
+    <>
+      {isMobile && (
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger>
+            <div className="font-normal transition border-none border border-input bg-background hover:bg-accent hover:text-accent-foreground">
+              <Menu className=" size-6"></Menu>
+            </div>
+          </SheetTrigger>
+          <SheetContent side="right" className="px-2">
+            <nav className="flex flex-col gap-y-2 pt-6">
+              {recipes_routes.map((route: any) => {
+                return (
+                  <Button
+                    key={route.href}
+                    onClick={() => onClick(route.href)}
+                    variant={route.active ? "outline" : "ghost"}
+                    className={cn(
+                      " w-full justify-end",
+                      route.active ?? "bg-muted-foreground"
+                    )}
+                  >
+                    {route.label}
+                  </Button>
+                );
+              })}
+            </nav>
+          </SheetContent>
+        </Sheet>
+      )}
+      {!isMobile && (
+        <div className={cn("flex items-center space-x-4 lg:space-x-6")}>
+          {recipes_routes.map((route: any) => {
+            return (
+              <Link
+                key={route.href}
+                href={route.href}
+                className={cn(
+                  "w-full lg:w-auto text-sm font-medium transition-colors hover:text-primary",
+                  route.active
+                    ? "text-black dark:text-white "
+                    : "text-muted-foreground"
+                )}
+              >
+                {route.label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </>
   );
 };
 

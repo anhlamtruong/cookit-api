@@ -1,18 +1,13 @@
-import { getDownloadURL, listAll, ref, storage } from "@/lib/firebase/storage";
-import { db } from "@/lib/firebase/firebase";
+import { db } from "@/services/firebase/firebase";
 import { NextRequest, NextResponse } from "next/server";
 import {
   collection,
-  addDoc,
   doc,
-  setDoc,
   updateDoc,
   deleteDoc,
   getDocFromCache,
-  arrayUnion,
   getDoc,
   Timestamp,
-  DocumentReference,
 } from "firebase/firestore";
 import { currentUser } from "@/lib/auth";
 

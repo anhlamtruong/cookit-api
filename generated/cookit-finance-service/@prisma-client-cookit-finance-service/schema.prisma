@@ -1,0 +1,23 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../generated/cookit-finance-service/@prisma-client-cookit-finance-service"
+}
+
+datasource db {
+  provider = "mongodb"
+  url = env("FINANCE_DATABASE_URL")
+}
+
+
+model Accounts {
+  id String                  @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  plaidId String               
+  userId String
+  createAt DateTime           @default(now())
+  updateAt DateTime           @updatedAt
+}
+

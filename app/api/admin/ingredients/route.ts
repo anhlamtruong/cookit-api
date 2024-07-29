@@ -1,5 +1,10 @@
-import { getDownloadURL, listAll, ref, storage } from "@/lib/firebase/storage";
-import { db } from "@/lib/firebase/firebase";
+import {
+  getDownloadURL,
+  listAll,
+  ref,
+  storage,
+} from "@/services/firebase/storage";
+import { db } from "@/services/firebase/firebase";
 import { NextRequest, NextResponse } from "next/server";
 import {
   collection,

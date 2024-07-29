@@ -1,5 +1,3 @@
-"use client";
-
 import LoadingCarrot from "@/components/ui/loading/loading-carrot";
 
 const Loading = () => {

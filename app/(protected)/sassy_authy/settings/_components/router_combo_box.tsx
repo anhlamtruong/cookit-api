@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuSeparator,
@@ -33,6 +32,11 @@ export function RouterComboBox() {
       href: `/store_admin`,
       label: "Stores",
       active: pathname.includes("/store_admin"),
+    },
+    {
+      href: `/finance`,
+      label: "Finance",
+      active: pathname.includes("/finance"),
     },
   ];
 

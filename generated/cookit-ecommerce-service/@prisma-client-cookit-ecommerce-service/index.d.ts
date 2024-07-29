@@ -1902,11 +1902,13 @@ export namespace Prisma {
    */
 
   export type ChefCountOutputType = {
+    store: number
     profilePictures: number
     menus: number
   }
 
   export type ChefCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    store?: boolean | ChefCountOutputTypeCountStoreArgs
     profilePictures?: boolean | ChefCountOutputTypeCountProfilePicturesArgs
     menus?: boolean | ChefCountOutputTypeCountMenusArgs
   }
@@ -1921,6 +1923,14 @@ export namespace Prisma {
      * Select specific fields to fetch from the ChefCountOutputType
      */
     select?: ChefCountOutputTypeSelect<ExtArgs> | null
+  }
+
+
+  /**
+   * ChefCountOutputType without action
+   */
+  export type ChefCountOutputTypeCountStoreArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StoreWhereInput
   }
 
 
@@ -5437,7 +5447,7 @@ export namespace Prisma {
   export type $ChefPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Chef"
     objects: {
-      store: Prisma.$StorePayload<ExtArgs> | null
+      store: Prisma.$StorePayload<ExtArgs>[]
       profilePictures: Prisma.$ProfilePicturesPayload<ExtArgs>[]
       menus: Prisma.$MenuPayload<ExtArgs>[]
     }
@@ -5839,7 +5849,7 @@ export namespace Prisma {
   export interface Prisma__ChefClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
-    store<T extends Chef$storeArgs<ExtArgs> = {}>(args?: Subset<T, Chef$storeArgs<ExtArgs>>): Prisma__StoreClient<$Result.GetResult<Prisma.$StorePayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
+    store<T extends Chef$storeArgs<ExtArgs> = {}>(args?: Subset<T, Chef$storeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StorePayload<ExtArgs>, T, 'findMany'> | Null>;
 
     profilePictures<T extends Chef$profilePicturesArgs<ExtArgs> = {}>(args?: Subset<T, Chef$profilePicturesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfilePicturesPayload<ExtArgs>, T, 'findMany'> | Null>;
 
@@ -6231,6 +6241,11 @@ export namespace Prisma {
      */
     include?: StoreInclude<ExtArgs> | null
     where?: StoreWhereInput
+    orderBy?: StoreOrderByWithRelationInput | StoreOrderByWithRelationInput[]
+    cursor?: StoreWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StoreScalarFieldEnum | StoreScalarFieldEnum[]
   }
 
 
@@ -13958,7 +13973,6 @@ export namespace Prisma {
   export type StoreWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     name?: string
-    chefId?: string
     AND?: StoreWhereInput | StoreWhereInput[]
     OR?: StoreWhereInput[]
     NOT?: StoreWhereInput | StoreWhereInput[]
@@ -13966,6 +13980,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Store"> | string | null
     imageUrl?: StringNullableFilter<"Store"> | string | null
     status?: EnumStoreStatusFilter<"Store"> | $Enums.StoreStatus
+    chefId?: StringFilter<"Store"> | string
     createAt?: DateTimeFilter<"Store"> | Date | string
     updateAt?: DateTimeFilter<"Store"> | Date | string
     menus?: MenuListRelationFilter
@@ -13974,7 +13989,7 @@ export namespace Prisma {
     chef?: XOR<ChefRelationFilter, ChefWhereInput>
     order?: OrderListRelationFilter
     sizes?: SizeListRelationFilter
-  }, "id" | "name" | "chefId">
+  }, "id" | "name">
 
   export type StoreOrderByWithAggregationInput = {
     id?: SortOrder
@@ -14144,7 +14159,7 @@ export namespace Prisma {
     bio?: StringNullableFilter<"Chef"> | string | null
     createdAt?: DateTimeFilter<"Chef"> | Date | string
     updatedAt?: DateTimeFilter<"Chef"> | Date | string
-    store?: XOR<StoreNullableRelationFilter, StoreWhereInput> | null
+    store?: StoreListRelationFilter
     profilePictures?: ProfilePicturesListRelationFilter
     menus?: MenuListRelationFilter
   }
@@ -14155,7 +14170,7 @@ export namespace Prisma {
     bio?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    store?: StoreOrderByWithRelationInput
+    store?: StoreOrderByRelationAggregateInput
     profilePictures?: ProfilePicturesOrderByRelationAggregateInput
     menus?: MenuOrderByRelationAggregateInput
   }
@@ -14169,7 +14184,7 @@ export namespace Prisma {
     bio?: StringNullableFilter<"Chef"> | string | null
     createdAt?: DateTimeFilter<"Chef"> | Date | string
     updatedAt?: DateTimeFilter<"Chef"> | Date | string
-    store?: XOR<StoreNullableRelationFilter, StoreWhereInput> | null
+    store?: StoreListRelationFilter
     profilePictures?: ProfilePicturesListRelationFilter
     menus?: MenuListRelationFilter
   }, "id">
@@ -14954,7 +14969,7 @@ export namespace Prisma {
     bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    store?: StoreCreateNestedOneWithoutChefInput
+    store?: StoreCreateNestedManyWithoutChefInput
     profilePictures?: ProfilePicturesCreateNestedManyWithoutChefInput
     menus?: MenuCreateNestedManyWithoutChefInput
   }
@@ -14965,7 +14980,7 @@ export namespace Prisma {
     bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    store?: StoreUncheckedCreateNestedOneWithoutChefInput
+    store?: StoreUncheckedCreateNestedManyWithoutChefInput
     profilePictures?: ProfilePicturesUncheckedCreateNestedManyWithoutChefInput
     menus?: MenuUncheckedCreateNestedManyWithoutChefInput
   }
@@ -14975,7 +14990,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    store?: StoreUpdateOneWithoutChefNestedInput
+    store?: StoreUpdateManyWithoutChefNestedInput
     profilePictures?: ProfilePicturesUpdateManyWithoutChefNestedInput
     menus?: MenuUpdateManyWithoutChefNestedInput
   }
@@ -14985,7 +15000,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    store?: StoreUncheckedUpdateOneWithoutChefNestedInput
+    store?: StoreUncheckedUpdateManyWithoutChefNestedInput
     profilePictures?: ProfilePicturesUncheckedUpdateManyWithoutChefNestedInput
     menus?: MenuUncheckedUpdateManyWithoutChefNestedInput
   }
@@ -15804,15 +15819,20 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type StoreNullableRelationFilter = {
-    is?: StoreWhereInput | null
-    isNot?: StoreWhereInput | null
+  export type StoreListRelationFilter = {
+    every?: StoreWhereInput
+    some?: StoreWhereInput
+    none?: StoreWhereInput
   }
 
   export type ProfilePicturesListRelationFilter = {
     every?: ProfilePicturesWhereInput
     some?: ProfilePicturesWhereInput
     none?: ProfilePicturesWhereInput
+  }
+
+  export type StoreOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type ProfilePicturesOrderByRelationAggregateInput = {
@@ -16641,10 +16661,11 @@ export namespace Prisma {
     deleteMany?: MenuScalarWhereInput | MenuScalarWhereInput[]
   }
 
-  export type StoreCreateNestedOneWithoutChefInput = {
-    create?: XOR<StoreCreateWithoutChefInput, StoreUncheckedCreateWithoutChefInput>
-    connectOrCreate?: StoreCreateOrConnectWithoutChefInput
-    connect?: StoreWhereUniqueInput
+  export type StoreCreateNestedManyWithoutChefInput = {
+    create?: XOR<StoreCreateWithoutChefInput, StoreUncheckedCreateWithoutChefInput> | StoreCreateWithoutChefInput[] | StoreUncheckedCreateWithoutChefInput[]
+    connectOrCreate?: StoreCreateOrConnectWithoutChefInput | StoreCreateOrConnectWithoutChefInput[]
+    createMany?: StoreCreateManyChefInputEnvelope
+    connect?: StoreWhereUniqueInput | StoreWhereUniqueInput[]
   }
 
   export type ProfilePicturesCreateNestedManyWithoutChefInput = {
@@ -16661,10 +16682,11 @@ export namespace Prisma {
     connect?: MenuWhereUniqueInput | MenuWhereUniqueInput[]
   }
 
-  export type StoreUncheckedCreateNestedOneWithoutChefInput = {
-    create?: XOR<StoreCreateWithoutChefInput, StoreUncheckedCreateWithoutChefInput>
-    connectOrCreate?: StoreCreateOrConnectWithoutChefInput
-    connect?: StoreWhereUniqueInput
+  export type StoreUncheckedCreateNestedManyWithoutChefInput = {
+    create?: XOR<StoreCreateWithoutChefInput, StoreUncheckedCreateWithoutChefInput> | StoreCreateWithoutChefInput[] | StoreUncheckedCreateWithoutChefInput[]
+    connectOrCreate?: StoreCreateOrConnectWithoutChefInput | StoreCreateOrConnectWithoutChefInput[]
+    createMany?: StoreCreateManyChefInputEnvelope
+    connect?: StoreWhereUniqueInput | StoreWhereUniqueInput[]
   }
 
   export type ProfilePicturesUncheckedCreateNestedManyWithoutChefInput = {
@@ -16681,14 +16703,18 @@ export namespace Prisma {
     connect?: MenuWhereUniqueInput | MenuWhereUniqueInput[]
   }
 
-  export type StoreUpdateOneWithoutChefNestedInput = {
-    create?: XOR<StoreCreateWithoutChefInput, StoreUncheckedCreateWithoutChefInput>
-    connectOrCreate?: StoreCreateOrConnectWithoutChefInput
-    upsert?: StoreUpsertWithoutChefInput
-    disconnect?: StoreWhereInput | boolean
-    delete?: StoreWhereInput | boolean
-    connect?: StoreWhereUniqueInput
-    update?: XOR<XOR<StoreUpdateToOneWithWhereWithoutChefInput, StoreUpdateWithoutChefInput>, StoreUncheckedUpdateWithoutChefInput>
+  export type StoreUpdateManyWithoutChefNestedInput = {
+    create?: XOR<StoreCreateWithoutChefInput, StoreUncheckedCreateWithoutChefInput> | StoreCreateWithoutChefInput[] | StoreUncheckedCreateWithoutChefInput[]
+    connectOrCreate?: StoreCreateOrConnectWithoutChefInput | StoreCreateOrConnectWithoutChefInput[]
+    upsert?: StoreUpsertWithWhereUniqueWithoutChefInput | StoreUpsertWithWhereUniqueWithoutChefInput[]
+    createMany?: StoreCreateManyChefInputEnvelope
+    set?: StoreWhereUniqueInput | StoreWhereUniqueInput[]
+    disconnect?: StoreWhereUniqueInput | StoreWhereUniqueInput[]
+    delete?: StoreWhereUniqueInput | StoreWhereUniqueInput[]
+    connect?: StoreWhereUniqueInput | StoreWhereUniqueInput[]
+    update?: StoreUpdateWithWhereUniqueWithoutChefInput | StoreUpdateWithWhereUniqueWithoutChefInput[]
+    updateMany?: StoreUpdateManyWithWhereWithoutChefInput | StoreUpdateManyWithWhereWithoutChefInput[]
+    deleteMany?: StoreScalarWhereInput | StoreScalarWhereInput[]
   }
 
   export type ProfilePicturesUpdateManyWithoutChefNestedInput = {
@@ -16719,14 +16745,18 @@ export namespace Prisma {
     deleteMany?: MenuScalarWhereInput | MenuScalarWhereInput[]
   }
 
-  export type StoreUncheckedUpdateOneWithoutChefNestedInput = {
-    create?: XOR<StoreCreateWithoutChefInput, StoreUncheckedCreateWithoutChefInput>
-    connectOrCreate?: StoreCreateOrConnectWithoutChefInput
-    upsert?: StoreUpsertWithoutChefInput
-    disconnect?: StoreWhereInput | boolean
-    delete?: StoreWhereInput | boolean
-    connect?: StoreWhereUniqueInput
-    update?: XOR<XOR<StoreUpdateToOneWithWhereWithoutChefInput, StoreUpdateWithoutChefInput>, StoreUncheckedUpdateWithoutChefInput>
+  export type StoreUncheckedUpdateManyWithoutChefNestedInput = {
+    create?: XOR<StoreCreateWithoutChefInput, StoreUncheckedCreateWithoutChefInput> | StoreCreateWithoutChefInput[] | StoreUncheckedCreateWithoutChefInput[]
+    connectOrCreate?: StoreCreateOrConnectWithoutChefInput | StoreCreateOrConnectWithoutChefInput[]
+    upsert?: StoreUpsertWithWhereUniqueWithoutChefInput | StoreUpsertWithWhereUniqueWithoutChefInput[]
+    createMany?: StoreCreateManyChefInputEnvelope
+    set?: StoreWhereUniqueInput | StoreWhereUniqueInput[]
+    disconnect?: StoreWhereUniqueInput | StoreWhereUniqueInput[]
+    delete?: StoreWhereUniqueInput | StoreWhereUniqueInput[]
+    connect?: StoreWhereUniqueInput | StoreWhereUniqueInput[]
+    update?: StoreUpdateWithWhereUniqueWithoutChefInput | StoreUpdateWithWhereUniqueWithoutChefInput[]
+    updateMany?: StoreUpdateManyWithWhereWithoutChefInput | StoreUpdateManyWithWhereWithoutChefInput[]
+    deleteMany?: StoreScalarWhereInput | StoreScalarWhereInput[]
   }
 
   export type ProfilePicturesUncheckedUpdateManyWithoutChefNestedInput = {
@@ -18117,6 +18147,10 @@ export namespace Prisma {
     create: XOR<StoreCreateWithoutChefInput, StoreUncheckedCreateWithoutChefInput>
   }
 
+  export type StoreCreateManyChefInputEnvelope = {
+    data: StoreCreateManyChefInput | StoreCreateManyChefInput[]
+  }
+
   export type ProfilePicturesCreateWithoutChefInput = {
     id?: string
     description?: string | null
@@ -18189,45 +18223,35 @@ export namespace Prisma {
     data: MenuCreateManyChefInput | MenuCreateManyChefInput[]
   }
 
-  export type StoreUpsertWithoutChefInput = {
+  export type StoreUpsertWithWhereUniqueWithoutChefInput = {
+    where: StoreWhereUniqueInput
     update: XOR<StoreUpdateWithoutChefInput, StoreUncheckedUpdateWithoutChefInput>
     create: XOR<StoreCreateWithoutChefInput, StoreUncheckedCreateWithoutChefInput>
-    where?: StoreWhereInput
   }
 
-  export type StoreUpdateToOneWithWhereWithoutChefInput = {
-    where?: StoreWhereInput
+  export type StoreUpdateWithWhereUniqueWithoutChefInput = {
+    where: StoreWhereUniqueInput
     data: XOR<StoreUpdateWithoutChefInput, StoreUncheckedUpdateWithoutChefInput>
   }
 
-  export type StoreUpdateWithoutChefInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
-    createAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    menus?: MenuUpdateManyWithoutStoreNestedInput
-    billboards?: BillboardUpdateManyWithoutStoreNestedInput
-    categories?: CategoryUpdateManyWithoutStoreNestedInput
-    order?: OrderUpdateManyWithoutStoreNestedInput
-    sizes?: SizeUpdateManyWithoutStoreNestedInput
+  export type StoreUpdateManyWithWhereWithoutChefInput = {
+    where: StoreScalarWhereInput
+    data: XOR<StoreUpdateManyMutationInput, StoreUncheckedUpdateManyWithoutChefInput>
   }
 
-  export type StoreUncheckedUpdateWithoutChefInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
-    createAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    menus?: MenuUncheckedUpdateManyWithoutStoreNestedInput
-    billboards?: BillboardUncheckedUpdateManyWithoutStoreNestedInput
-    categories?: CategoryUncheckedUpdateManyWithoutStoreNestedInput
-    order?: OrderUncheckedUpdateManyWithoutStoreNestedInput
-    sizes?: SizeUncheckedUpdateManyWithoutStoreNestedInput
+  export type StoreScalarWhereInput = {
+    AND?: StoreScalarWhereInput | StoreScalarWhereInput[]
+    OR?: StoreScalarWhereInput[]
+    NOT?: StoreScalarWhereInput | StoreScalarWhereInput[]
+    id?: StringFilter<"Store"> | string
+    name?: StringFilter<"Store"> | string
+    userId?: StringFilter<"Store"> | string
+    description?: StringNullableFilter<"Store"> | string | null
+    imageUrl?: StringNullableFilter<"Store"> | string | null
+    status?: EnumStoreStatusFilter<"Store"> | $Enums.StoreStatus
+    chefId?: StringFilter<"Store"> | string
+    createAt?: DateTimeFilter<"Store"> | Date | string
+    updateAt?: DateTimeFilter<"Store"> | Date | string
   }
 
   export type ProfilePicturesUpsertWithWhereUniqueWithoutChefInput = {
@@ -18317,7 +18341,7 @@ export namespace Prisma {
     bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    store?: StoreCreateNestedOneWithoutChefInput
+    store?: StoreCreateNestedManyWithoutChefInput
     profilePictures?: ProfilePicturesCreateNestedManyWithoutChefInput
   }
 
@@ -18327,7 +18351,7 @@ export namespace Prisma {
     bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    store?: StoreUncheckedCreateNestedOneWithoutChefInput
+    store?: StoreUncheckedCreateNestedManyWithoutChefInput
     profilePictures?: ProfilePicturesUncheckedCreateNestedManyWithoutChefInput
   }
 
@@ -18516,7 +18540,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    store?: StoreUpdateOneWithoutChefNestedInput
+    store?: StoreUpdateManyWithoutChefNestedInput
     profilePictures?: ProfilePicturesUpdateManyWithoutChefNestedInput
   }
 
@@ -18525,7 +18549,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    store?: StoreUncheckedUpdateOneWithoutChefNestedInput
+    store?: StoreUncheckedUpdateManyWithoutChefNestedInput
     profilePictures?: ProfilePicturesUncheckedUpdateManyWithoutChefNestedInput
   }
 
@@ -19186,7 +19210,7 @@ export namespace Prisma {
     bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    store?: StoreCreateNestedOneWithoutChefInput
+    store?: StoreCreateNestedManyWithoutChefInput
     menus?: MenuCreateNestedManyWithoutChefInput
   }
 
@@ -19196,7 +19220,7 @@ export namespace Prisma {
     bio?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    store?: StoreUncheckedCreateNestedOneWithoutChefInput
+    store?: StoreUncheckedCreateNestedManyWithoutChefInput
     menus?: MenuUncheckedCreateNestedManyWithoutChefInput
   }
 
@@ -19221,7 +19245,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    store?: StoreUpdateOneWithoutChefNestedInput
+    store?: StoreUpdateManyWithoutChefNestedInput
     menus?: MenuUpdateManyWithoutChefNestedInput
   }
 
@@ -19230,7 +19254,7 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    store?: StoreUncheckedUpdateOneWithoutChefNestedInput
+    store?: StoreUncheckedUpdateManyWithoutChefNestedInput
     menus?: MenuUncheckedUpdateManyWithoutChefNestedInput
   }
 
@@ -19637,6 +19661,17 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type StoreCreateManyChefInput = {
+    id?: string
+    name: string
+    userId: string
+    description?: string | null
+    imageUrl?: string | null
+    status?: $Enums.StoreStatus
+    createAt?: Date | string
+    updateAt?: Date | string
+  }
+
   export type ProfilePicturesCreateManyChefInput = {
     id?: string
     description?: string | null
@@ -19659,6 +19694,46 @@ export namespace Prisma {
     isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type StoreUpdateWithoutChefInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+    createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    menus?: MenuUpdateManyWithoutStoreNestedInput
+    billboards?: BillboardUpdateManyWithoutStoreNestedInput
+    categories?: CategoryUpdateManyWithoutStoreNestedInput
+    order?: OrderUpdateManyWithoutStoreNestedInput
+    sizes?: SizeUpdateManyWithoutStoreNestedInput
+  }
+
+  export type StoreUncheckedUpdateWithoutChefInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+    createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    menus?: MenuUncheckedUpdateManyWithoutStoreNestedInput
+    billboards?: BillboardUncheckedUpdateManyWithoutStoreNestedInput
+    categories?: CategoryUncheckedUpdateManyWithoutStoreNestedInput
+    order?: OrderUncheckedUpdateManyWithoutStoreNestedInput
+    sizes?: SizeUncheckedUpdateManyWithoutStoreNestedInput
+  }
+
+  export type StoreUncheckedUpdateManyWithoutChefInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+    createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ProfilePicturesUpdateWithoutChefInput = {

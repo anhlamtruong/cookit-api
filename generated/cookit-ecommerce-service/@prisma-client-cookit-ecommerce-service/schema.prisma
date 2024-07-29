@@ -22,13 +22,13 @@ model Store {
   menus Menu[]                
   billboards Billboard[]      
   categories Category[]
-  chefId       String         @unique @db.ObjectId
-  chef        Chef            @relation(fields: [chefId], references: [id])
+  chefId  String     @db.ObjectId
+  chef        Chef   @relation(fields: [chefId], references: [id])       
   order Order[]               
   sizes Size[]                
   createAt DateTime           @default(now())
   updateAt DateTime           @updatedAt
-
+@@index([chefId])
   
 }
 
@@ -63,12 +63,12 @@ model Chef {
   id             String         @id @default(auto()) @map("_id") @db.ObjectId      
   userId         String
   bio            String?
-  store          Store?          
+  store Store[]       
   profilePictures ProfilePictures[]
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
   menus          Menu[]
-  
+
   // ... other fields specific to the chef ...
 }
 

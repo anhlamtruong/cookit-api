@@ -24,11 +24,6 @@ export async function POST(req: Request) {
     if (!name) {
       return new NextResponse("Name of the Store is required", { status: 400 });
     }
-    if (!name) {
-      return new NextResponse("ChefId of the Store is required", {
-        status: 400,
-      });
-    }
     if (!chefId) {
       return new NextResponse("ChefId of the Store is required", {
         status: 400,

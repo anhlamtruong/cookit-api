@@ -6,7 +6,7 @@ import { getUserById } from "@/data/user";
 import { getTwoFactorConfirmationByUserId } from "@/data/two_factor_confirmation";
 import { getAccountByUserId } from "@/data/account";
 import { UserRole } from "./generated/authenticate/@prisma-client-authenticate";
-import { db } from "./lib/firebase/firebase";
+import { db } from "./services/firebase/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 export const {
   handlers: { GET, POST },

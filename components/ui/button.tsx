@@ -55,13 +55,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       disabled,
       withTheme = false,
       fullWidth = false,
+
       ...props
     },
     ref
   ) => {
     const Comp = asChild ? Slot : "button";
 
-    const styles = useStyles();
     return (
       <Comp
         className={cn(

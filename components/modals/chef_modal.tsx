@@ -5,7 +5,7 @@ import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { Input } from "@/components/ui/input";
@@ -22,25 +22,21 @@ import { Button } from "@/components/ui/button";
 import { FormError } from "../form_error";
 import { Separator } from "../ui/separator";
 import { ImageWithDescriptionUpload } from "../ui/image_with_description_upload";
-import { settings } from "@/actions/settings";
-import { useChef } from "@/hooks/store/useChef";
+import { useChef, useUpdateChef } from "@/hooks/store/useChef";
 import { BeatLoader } from "react-spinners";
 
 const formSchema = z.object({
   bio: z.string().max(500),
-  images: z
-    .object({ url: z.string(), description: z.optional(z.string()) })
-    .array(),
+  images: z.object({ url: z.string(), description: z.string() }).array(),
 });
 
 export const ChefModal = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const isPreview = searchParams.get("isPreview");
 
   const [error, setError] = useState<string | undefined>("");
   const [loading, setLoading] = useState(false);
-  const { data: dataChef, isLoading: isLoadingChef } = useChef();
+  const { data: dataChef } = useChef();
+  const { mutate: updateChef } = useUpdateChef();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -60,13 +56,13 @@ export const ChefModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      if (!isPreview) {
+      if (dataChef?.id === null || dataChef?.id === undefined) {
         setError("");
         setLoading(true);
         const response = await axios.post("/api/admin/chef", values);
         if (response.status === 200) {
           toast.success("Success Creating Chef!");
-          settings;
+          updateChef(response.data);
           router.refresh();
         } else {
           toast.error("Something went wrong :(, please try again");
@@ -80,7 +76,7 @@ export const ChefModal = () => {
         });
         if (response.status === 200) {
           toast.success("Success Update Chef!");
-          settings;
+          updateChef(response.data);
           router.refresh();
         } else {
           toast.error("Something went wrong :(, please try again");

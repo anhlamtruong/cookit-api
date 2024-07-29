@@ -1,4 +1,9 @@
-import { getDownloadURL, listAll, ref, storage } from "@/lib/firebase/storage";
+import {
+  getDownloadURL,
+  listAll,
+  ref,
+  storage,
+} from "@/services/firebase/storage";
 import { NextRequest, NextResponse } from "next/server";
 import DOMPurify from "isomorphic-dompurify";
 export async function GET(req: NextRequest) {

@@ -1,4 +1,3 @@
-"use client";
 import { cn } from "@/lib/utils";
 import { Reenie_Beanie } from "next/font/google";
 import { LandingPageAdmin } from "./landing_page_admin";

@@ -3,7 +3,7 @@ import { Prisma } from "@/generated/cookit-ecommerce-service/@prisma-client-cook
 import { currentUser } from "@/lib/auth";
 import prismaStore from "@/lib/service/prisma_store";
 import { NextResponse } from "next/server";
-import { db } from "@/lib/firebase/firebase";
+import { db } from "@/services/firebase/firebase";
 import { collection, getDocs } from "firebase/firestore";
 export async function POST(req: Request) {
   try {

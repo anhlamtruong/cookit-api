@@ -5,12 +5,15 @@ import { Input } from "@/components/ui/input";
 import {
   ColumnDef,
   flexRender,
+  SortingState,
   VisibilityState,
   getCoreRowModel,
   ColumnFiltersState,
   getPaginationRowModel,
   getFilteredRowModel,
+  getSortedRowModel,
   useReactTable,
+  Row,
 } from "@tanstack/react-table";
 
 import {
@@ -29,11 +32,15 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Trash } from "lucide-react";
+import { useConfirm } from "@/hooks/ui/use-confirm";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchKey: string;
+  onDelete?: (rows: Row<TData>[]) => void;
+  disabled?: boolean;
   visibleColumn?: boolean;
 }
 
@@ -41,11 +48,18 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   searchKey,
+  onDelete = () => {},
+  disabled,
   visibleColumn = false,
 }: DataTableProps<TData, TValue>) {
+  const [ConfirmDialog, confirm] = useConfirm(
+    "Are you sure ?",
+    "You are about to perform a bulk delete."
+  );
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -61,15 +75,19 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     state: {
       columnFilters,
       columnVisibility,
       rowSelection,
+      sorting,
     },
   });
 
   return (
     <div>
+      <ConfirmDialog></ConfirmDialog>
       <div className="flex items-center py-4">
         <Input
           placeholder="Search by label or name..."
@@ -79,6 +97,24 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
+        {table.getFilteredSelectedRowModel().rows.length > 0 && (
+          <Button
+            onClick={async () => {
+              const ok = await confirm();
+              if (ok) {
+                onDelete(table.getFilteredSelectedRowModel().rows);
+                table.resetRowSelection();
+              }
+            }}
+            disabled={disabled}
+            size={"sm"}
+            variant={"outline"}
+            className=" ml-auto font-normal text-xs"
+          >
+            <Trash className=" size-4 mr-2"></Trash>
+            Delete ({table.getFilteredSelectedRowModel().rows.length})
+          </Button>
+        )}
         {visibleColumn ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

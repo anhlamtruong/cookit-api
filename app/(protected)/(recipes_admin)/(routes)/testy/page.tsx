@@ -48,13 +48,9 @@ export default function ThemesPage() {
 
   const { isLoaded, loadError } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY ?? "",
+    googleMapsApiKey: process.env.GOOGLE_MAP_API_KEY ?? "",
     libraries,
   });
-  // const { isLoaded, loadError } = useLoadScript({
-  //   googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!,
-  //   libraries,
-  // });
 
   if (loadError) {
     return <div>Error loading maps</div>;

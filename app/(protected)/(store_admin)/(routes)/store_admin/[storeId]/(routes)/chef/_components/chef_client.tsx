@@ -4,7 +4,7 @@ import { GlassesIcon, PencilRuler } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { ChefModal } from "@/components/modals/chef_modal";
 import Link from "next/link";
 import { BioReview } from "./bio_review";

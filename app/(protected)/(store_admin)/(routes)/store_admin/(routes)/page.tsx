@@ -15,30 +15,18 @@ const StoreAdminPage: React.FC = ({}) => {
   const onClose = useStoreModal((state) => state.onClose);
   const isOpen = useStoreModal((state) => state.isOpen);
 
-  const { data: chefData, isLoading } = useChef();
-  const { data: storeData } = useStores();
+  const { data: storeData, isLoading } = useStores();
 
   const router = useRouter();
   useEffect(() => {
-    if (!isOpen && chefData && storeData?.length === 0) {
-      onOpen();
-    } else {
-      onClose();
-      storeData
-        ? storeData[0]
-          ? router.push(`/store_admin/${storeData[0].id}`)
-          : onOpen()
-        : null;
-    }
-  }, [chefData, isOpen, onClose, onOpen, router, storeData, storeData?.length]);
+    storeData
+      ? storeData[0]
+        ? router.push(`/store_admin/${storeData[0].id}`)
+        : onOpen()
+      : null;
+  }, [, isOpen, onClose, onOpen, router, storeData, storeData?.length]);
 
-  return !chefData ? (
-    <div className=" flex flex-col w-screen h-screen self-center justify-center items-center">
-      <Suspense fallback={<p>Loading Chef Modal</p>}>
-        <ChefModal />
-      </Suspense>
-    </div>
-  ) : !isLoading ? (
+  return isLoading ? (
     <div>Redirecting to Store ...</div>
   ) : (
     <Skeleton></Skeleton>
