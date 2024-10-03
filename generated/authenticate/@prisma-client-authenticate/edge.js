@@ -186,7 +186,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "D:\\Fall2022\\Webiste\\cookit-api\\generated\\authenticate\\@prisma-client-authenticate",
+      "value": "C:\\Users\\BAURegistrar\\Downloads\\Code\\cookit-api\\generated\\authenticate\\@prisma-client-authenticate",
       "fromEnvVar": null
     },
     "config": {
@@ -203,8 +203,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../../prisma/authenticate",
   "clientVersion": "5.11.0",
